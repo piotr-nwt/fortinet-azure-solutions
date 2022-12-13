@@ -16,9 +16,9 @@ Azure Route Server has dual role:
 
 In this example from Microsoft Azure Route Server 1 in the hub is used to inject the prefixes from the SDWAN into ExpressRoute. Since the spokes are peered with the hub VNet without the "Use Remote Gateways" and "Allow Gateway Transit" VNet peering options, the spokes won't learn these routes (neither the SDWAN prefixes nor the ExpressRoute prefixes).
 
-To propagate routes to the spokes the NVA uses a second Azure Route Server 2, deployed in a new auxiliary VNet. The NVA will only propagate a single 0.0.0.0/0 route to this Azure Route Server 2. Since the spokes are peered with this auxiliary VNet with "Use Remote Gateways" and "Allow Gateway Transit" VNet peering options, this 0.0.0.0/0 route will be learned by all the Virtual Machines in the spokes.
+To propagate routes to the spokes the NVA-FortiGate uses a second Azure Route Server 2, deployed in a new auxiliary VNet. FortiGate will only propagate a single 0.0.0.0/0 route to this Azure Route Server 2. Since the spokes are peered with this auxiliary VNet with "Use Remote Gateways" and "Allow Gateway Transit" VNet peering options, this 0.0.0.0/0 route will be learned by all the Virtual Machines in the spokes.
 
-The next hop for this 0.0.0.0/0 route will be the NVA, so the spokes still need to be peered to the hub VNet. Another important aspect to notice is that the hub VNet needs to be peered to the VNet where the new Azure Route Server 2 is deployed, otherwise it will not be able to create the BGP adjacency.
+The next hop for this 0.0.0.0/0 route will be the FortiGate, so the spokes still need to be peered to the hub VNet. Another important aspect to notice is that the hub VNet needs to be peered to the VNet where the new Azure Route Server 2 is deployed, otherwise it will not be able to create the BGP adjacency.
 
 This design allows automatic injection of routes in a spoke VNets without interference from other routes learned from ExpressRoute, VPN or an SDWAN environment.
 
