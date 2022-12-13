@@ -22,3 +22,6 @@ The next hop for this 0.0.0.0/0 route will be the FortiGate, so the spokes still
 
 This design allows automatic injection of routes in a spoke VNets without interference from other routes learned from ExpressRoute, VPN or an SDWAN environment.
 
+
+In our example we use Azure VPN Gateway with site to site VPN tunnel to single FortiGate VM instance. This is used in order to simulate Express Route Gateway and show how the whole setup should be configured.
+
