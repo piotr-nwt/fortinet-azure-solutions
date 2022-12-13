@@ -12,4 +12,4 @@ Azure Route Server has dual role:
 
   However, there's an alternative, more dynamic approach. It's possible using different Azure Route Servers for different functionality: one of them will be responsible for interacting with the Virtual Network Gateways, and the other one for interacting with the Virtual Network routing. The following diagram shows a possible design for this:
 
- ![Inbound Flow](/images/msft_dual_ars.png)
+ ![Dual-ars](/Users/piotrnowotarski/Desktop/Fortinet/Coding/Github/fortinet-azure-solutions/FortiGate/AzureRouteServer/Dual-ARS/images/msft_dual_ars.png)
