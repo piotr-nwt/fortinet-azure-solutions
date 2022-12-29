@@ -26,4 +26,4 @@ This design allows automatic injection of routes in a spoke VNets without interf
 In our example we use Azure VPN Gateway with site to site VPN tunnel to single FortiGate VM instance. This is used in order to simulate Express Route Gateway and show how the whole setup should be configured.
 
 
-test
+
