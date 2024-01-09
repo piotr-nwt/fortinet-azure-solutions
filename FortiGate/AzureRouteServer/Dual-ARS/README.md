@@ -22,12 +22,13 @@ The next hop for this 0.0.0.0/0 route will be the FortiGate, so the spokes still
 
 This design allows automatic injection of routes in a spoke VNets without interference from other routes learned from ExpressRoute, VPN or an SDWAN environment.
 
+If traffic from ExpressRoute to the spoke VNets is to be sent to a FortiGate NVA for inspection, a route table in the GatewaySubnet is still required, otherwise the ExpressRoute virtual network gateway will send packets to the virtual machines using the routes learnt from VNet peering. The routes in this route table should match the spoke prefixes, and the next hop should be the IP address of the FortiGate NVA or the load balancer in front of the FortiGates NVAs if you are using AA HA architecture.
 
-In our example we use Azure VPN Gateway with site to site VPN tunnel to single FortiGate VM instance. This is used in order to simulate Express Route Gateway and show how the whole setup should be configured.
+ ![Dual-ars_with_EX](../Dual-ARS/images/route-injection-split-route-server-with-firewall.png)
 
 
 
-test
+
 
 
 
