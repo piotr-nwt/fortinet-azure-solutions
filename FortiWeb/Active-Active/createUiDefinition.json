@@ -95,7 +95,7 @@
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fw-vm_payg_v2"
+              "value": "fortinet_fw-vm_payg_v3"
             }
           ]
         },
@@ -111,6 +111,10 @@
           "required": false,
           "allowedValues": [
             {
+              "label": "6.1.0",
+              "value": "6.1.0"
+            },
+            {
               "label": "6.3.17",
               "value": "6.3.17"
             },
@@ -121,6 +125,26 @@
             {
               "label": "7.0.3",
               "value": "7.0.3"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
             },
             {
               "label": "latest",
@@ -318,6 +342,13 @@
                 }
               },
               {
+                "name": "fwbLicenseFortiFlexCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the FortiFlex subscription service.",
+                "toolTip": "Select this box to enter a FortiFlex token",
+                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+              },
+              {
                 "name": "licenseacontent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiWeb A License",
@@ -332,7 +363,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": true
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "licensebcontent",
@@ -349,7 +380,33 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": true
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fwbAfortiflex",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWebA FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiWebA FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFortiFlexCheck]"
+              },
+              {
+                "name": "fwbBfortiflex",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWebB FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiWebB FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFortiFlexCheck]"
               },
               {
                 "name": "fwbLicensePAYGInfo",
@@ -359,7 +416,7 @@
                   "text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fw-vm'))]"
+                "visible": "[not(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'))]"
               },
               {
                 "name": "fwbLicenseMigrateInfo",
@@ -405,10 +462,10 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "Requirement to have 4 subnets connected to the FortiWeb VM: external, internal"
+                  "subnets": "During deployment 2 subnets will be deployed: external, internal"
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'fortiweb-vnet',concat(basics('fortiWebNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
@@ -537,7 +594,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBClusterPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiWebNamePrefix'),''),'fwb-pip',concat(basics('fortiWebNamePrefix'),'-fwb-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -579,7 +636,7 @@
               "icon": "Error",
               "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
+            "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none')))]"
           },
           {
             "name": "StandardIPConfirmation1",
@@ -654,10 +711,20 @@
               },
               {
                 "name": "haapplicationsecret",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Applicatin Secret",
-                "defaultValue": "",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Application Secret",
+                  "confirmPassword": "Confirm Secret"
+                },
                 "toolTip": "Active/Active config - Azure Service Principal Application Secret",
+                "constraints": {
+                  "required": false,
+                  "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
+                  "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+                },
+                "options": {
+                  "hideConfirmation": true
+                },
                 "visible": true
               }
             ]
@@ -677,6 +744,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiWebALicenseBYOL": "[steps('instance').fwbLicense.licenseacontent]",
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
+      "fortiWebALicenseFortiFlex": "[steps('instance').fwbLicense.fwbAfortiflex]",
+      "fortiWebBLicenseFortiFlex": "[steps('instance').fwbLicense.fwbBfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",

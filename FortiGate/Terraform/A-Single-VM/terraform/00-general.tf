@@ -1,6 +1,6 @@
 ##############################################################################################################
 #
-# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# FortiGate a standalone FortiGate VM
 # Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
@@ -25,20 +25,20 @@ variable "PASSWORD" {
 ##############################################################################################################
 
 variable "FGT_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2022') or byol (Bring your own license 'fortinet_fg-vm')"
-  default     = "fortinet_fg-vm_payg_2022"
+  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2023') or byol (Bring your own license 'fortinet_fg-vm')"
+  default     = "fortinet_fg-vm"
 }
 
 variable "FGT_VERSION" {
   description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "latest"
+  default     = "7.4.0"
 }
 
 variable "FGT_BYOL_LICENSE_FILE" {
   default = ""
 }
 
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE" {
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN" {
   default = ""
 }
 

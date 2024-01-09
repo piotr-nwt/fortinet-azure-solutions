@@ -68,15 +68,14 @@ Describe 'FGT A/P LB' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-            'Microsoft.Storage/storageAccounts',
             'Microsoft.Compute/availabilitySets',
-            'Microsoft.Network/routeTables',
             'Microsoft.Network/virtualNetworks',
-            'Microsoft.Network/loadBalancers',
+            'Microsoft.Network/routeTables',
             'Microsoft.Network/networkSecurityGroups',
             'Microsoft.Network/publicIPAddresses',
             'Microsoft.Network/publicIPAddresses',
             'Microsoft.Network/publicIPAddresses',
+            'Microsoft.Network/loadBalancers',
             'Microsoft.Network/loadBalancers',
             'Microsoft.Network/networkInterfaces',
             'Microsoft.Network/networkInterfaces',
@@ -97,13 +96,14 @@ Describe 'FGT A/P LB' {
             'adminPassword',
             'adminUsername',
             'availabilityOptions',
+            'customImageReference',
             'fortiGateAdditionalCustomData',
             'fortiGateImageSKU',
             'fortiGateImageVersion',
             'fortiGateLicenseBYOLA',
             'fortiGateLicenseBYOLB',
-            'fortiGateLicenseFlexVMA',
-            'fortiGateLicenseFlexVMB',
+            'fortiGateLicenseFortiFlexA',
+            'fortiGateLicenseFortiFlexB',
             'fortiGateNamePrefix',
             'fortiManager',
             'fortiManagerIP',
@@ -135,6 +135,7 @@ Describe 'FGT A/P LB' {
             'subnet4StartAddress',
             'subnet5Name',
             'subnet5Prefix',
+            'tagsByResource',
             'vnetAddressPrefix',
             'vnetName',
             'vnetNewOrExisting',
@@ -175,6 +176,7 @@ Describe 'FGT A/P LB' {
             config system console
             set output standard
             end
+            get system status
             show system interface
             show router static
             diag debug cloudinit show
@@ -184,25 +186,29 @@ Describe 'FGT A/P LB' {
         }
         It "FGT A: Ports listening" {
             ForEach ( $port in $ports ) {
-                Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgta -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
+                Write-Host ("Check port - $port : " + $portListening )
             }
         }
         It "FGT B: Ports listening" {
             ForEach ( $port in $ports ) {
-                Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgtb -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
+                Write-Host ("Check port - $port : " + $portListening )
             }
         }
         It "FGT A: Verify configuration" {
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgta
-            Write-Host ("Config: " + $result) -Separator `n
+            $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
         It "FGT B: Verify configuration" {
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgtb
+            $LASTEXITCODE | Should -Be "0"
             Write-Host ("Config: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 

@@ -85,7 +85,7 @@
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fw-vm_payg_v2"
+              "value": "fortinet_fw-vm_payg_v3"
             }
           ]
         },
@@ -101,6 +101,10 @@
           "required": false,
           "allowedValues": [
             {
+              "label": "6.1.0",
+              "value": "6.1.0"
+            },
+            {
               "label": "6.3.17",
               "value": "6.3.17"
             },
@@ -111,6 +115,26 @@
             {
               "label": "7.0.3",
               "value": "7.0.3"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
             },
             {
               "label": "latest",
@@ -366,7 +390,14 @@
                 }
               },
               {
-                "name": "fwbcontent",
+                "name": "fwbLicenseFlexVMCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the Flex-VM subscription service.",
+                "toolTip": "Select this box to enter a Flex-VM token",
+                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+              },
+              {
+                "name": "fwbLicenseContent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiWeb License",
                 "toolTip": "Upload the license file for the FortiWeb BYOL here.",
@@ -379,7 +410,21 @@
                   "uploadMode": "file",
                   "openMode": "text",
                   "encoding": "UTF-8"
-                }
+                },
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
+              },
+              {
+                "name": "fwbflexvm",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWeb Flex-VM",
+                "defaultValue": "",
+                "toolTip": "FortiWeb Flex-VM license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
               },
               {
                 "name": "fwbLicensePAYGInfo",
@@ -435,7 +480,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "Standard deployment is to have an "
+                  "subnets": "During deployment 2 subnets will be deployed: external, internal"
                 },
                 "defaultValue": {
                   "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",
@@ -697,7 +742,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
-      "fortiWebLicenseBYOL": "[steps('instance').fwbLicense.fwbcontent]",
+      "fortiWebLicenseBYOL": "[steps('instance').fwbLicense.fwbLicenseContent]",
+      "fortiWebLicenseFlexVM": "[steps('instance').fwbLicense.fwbflexvm]",
       "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",

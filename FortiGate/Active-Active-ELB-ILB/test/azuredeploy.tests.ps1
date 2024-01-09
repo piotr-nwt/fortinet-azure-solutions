@@ -34,11 +34,13 @@ BeforeAll {
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
     $publicIP1Name = "$testsPrefix-FGT-PIP"
+    $fortiGateCount = 3
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
                  'publicIP1Name'=$publicIP1Name
+                 'fortiGateCount'=$fortiGateCount
                }
     $ports = @(40030, 50030, 40031, 50031)
 }
@@ -66,19 +68,17 @@ Describe 'FGT A/A' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Storage/storageAccounts',
                                  'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/loadBalancers/inboundNatRules',
+                                 'Microsoft.Network/loadBalancers/inboundNatRules',
+                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
@@ -89,13 +89,18 @@ Describe 'FGT A/A' {
                                           'adminPassword',
                                           'adminUsername',
                                           'availabilityOptions',
+                                          'customImageReference',
+                                          'externalLoadBalancer',
                                           'fortiGateAdditionalCustomData',
+                                          'fortiGateCount',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
-                                          'fortiGateLicenseFlexVMA',
-                                          'fortiGateLicenseFlexVMB',
+                                          'fortiGateLicenseBYOLC',
+                                          'fortiGateLicenseFortiFlexA',
+                                          'fortiGateLicenseFortiFlexB',
+                                          'fortiGateLicenseFortiFlexC',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
@@ -109,12 +114,12 @@ Describe 'FGT A/A' {
                                           'serialConsole',
                                           'subnet1Name',
                                           'subnet1Prefix',
-                                          'subnet1StartAddress',
                                           'subnet2Name',
                                           'subnet2Prefix',
                                           'subnet2StartAddress',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'tagsByResource',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
@@ -149,11 +154,11 @@ Describe 'FGT A/A' {
         BeforeAll {
             $fgt = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
-            chmod 400 $sshkey
             $verify_commands = @'
             config system console
             set output standard
             end
+            get system status
             show system interface
             show router static
             diag debug cloudinit show
@@ -170,11 +175,15 @@ Describe 'FGT A/A' {
         }
         It "FGT A: Verify configuration" {
             $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            Write-Host ("Config: " + $result) -Separator `n
+            $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
         It "FGT B: Verify configuration" {
             $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            Write-Host ("Config: " + $result) -Separator `n
+            $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 

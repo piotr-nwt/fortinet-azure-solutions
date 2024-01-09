@@ -36,7 +36,7 @@ This template only deploys the Gateway Load Balancer and FortiGates (i.e. the pr
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/562841/instance-type-support)
-- Licenses for Fortigate
+- Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
   - The password provided during deployment must need password complexity rules from Microsoft Azure:
@@ -47,6 +47,9 @@ The ARM template deploys different resources and it is required to have the acce
 `az vm image accept-terms --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm`
   - PAYG
 `az vm image accept-terms --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm_payg_2020`
+
+### Change default MTU
+The FortiGate VM is going to receive VXLAN encapsulated packets. The inner packets can use the Azure default maximum transmission unit (MTU) (~1500bytes). As a result, the entire encapsulated packets may exceed the MTU of the FortiGate VM thus causing packet drops. Changing default MTU on the NVA VM prevents such packet drops. The additional bytes needed are the size of encapsulated headers, including an Ethernet header, an IP header, a UDP header, and a VXLAN header (RFC7348). To be specific, the additional size will be 50 bytes for regular IPv4 and 70 bytes for regular IPv6. So, the MTU of NVA needs to be at least 1570 to support both IPv4 and IPv6. FortiGate VM allows changing the MTU size to 1570. The template has functionality to update the MTU a required.
 
 ## FortiGate configuration
 
@@ -168,6 +171,7 @@ The producer environment only sees public IPs and doesn't require specific routi
 
 ## Links and documentation
 
+- [Fortinet Community blog](https://community.fortinet.com/t5/Blogs/Deploy-FortiGate-VMs-Seamlessly-with-Azure-Gateway-Load-Balancer/ba-p/238441)
 - [Azure Gateway Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/gateway-overview)
 - [Azure Load Balancer SKUs](https://docs.microsoft.com/en-gb/azure/load-balancer/skus)
 - [Azure Load Balancer outbound connectivity](https://docs.microsoft.com/en-gb/azure/load-balancer/load-balancer-outbound-connections)
@@ -180,4 +184,4 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

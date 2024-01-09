@@ -40,7 +40,7 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 ![Azure Portal 2](images/azure-portal-1.png)
 - Copy in the contents of the 'azuredeploy.json' file into the editor
 ![Azure Portal 3](images/azure-portal-1.png)
-- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limiations)
+- Complete the required variables. The VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limitations)
 ![Azure Portal 4](images/azure-portal-1.png)
 
 ### Azure CLI and Azure Cloud Shell
@@ -126,7 +126,7 @@ This template will not deploy the default Azure Marketplace images. You can depl
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F2s VMs to deploy the required active/passive setup
-- Licenses for Fortigate
+- Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 

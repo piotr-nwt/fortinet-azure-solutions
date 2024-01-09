@@ -58,7 +58,7 @@
       {
         "name": "fortiGateNamePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "Fortigate Name Prefix",
+        "label": "FortiGate Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -71,7 +71,7 @@
       {
         "name": "fortiGateImageSKU",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image SKU",
+        "label": "FortiGate Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
         "constraints": {
@@ -83,7 +83,7 @@
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_2022"
+              "value": "fortinet_fg-vm_payg_2023"
             }
           ]
         },
@@ -92,7 +92,7 @@
       {
         "name": "fortiGateImageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image Version",
+        "label": "FortiGate Image Version",
         "defaultValue": "latest",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
@@ -119,6 +119,22 @@
               "value": "6.4.0"
             },
             {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.12",
+              "value": "6.4.12"
+            },
+            {
+              "label": "6.4.13",
+              "value": "6.4.13"
+            },
+            {
               "label": "6.4.2",
               "value": "6.4.2"
             },
@@ -133,6 +149,106 @@
             {
               "label": "6.4.6",
               "value": "6.4.6"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.10",
+              "value": "7.0.10"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.13",
+              "value": "7.0.13"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "7.0.9",
+              "value": "7.0.9"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.2",
+              "value": "7.2.2"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.2.6",
+              "value": "7.2.6"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
+            },
+            {
+              "label": "7.4.1",
+              "value": "7.4.1"
             },
             {
               "label": "latest",
@@ -385,7 +501,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
+              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the FortiGate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
             }
           },
           {
@@ -635,7 +751,7 @@
                 "toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
                 "constraints": {
                   "required": false,
-                  "regex": "^[A-Za-z0-9.]{1,64}$",
+                  "regex": "^[A-Za-z0-9.-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
                 },
                 "visible": true

@@ -1,0 +1,29 @@
+name: '[FGT] TF - A-Single-VM - ValidIaC'
+
+env:
+  TFPath: FortiGate/Terraform/A-Single-VM/terraform/
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'FortiGate/Terraform/A-Single-VM/*.tf'
+      - 'FortiGate/Terraform/A-Single-VM/*.tpl'
+      - 'FortiGate/Terraform/A-Single-VM/*.hcl'
+
+jobs:
+  ValidIaC:
+    name: 'ValidIaC'
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/jvhoof/validiac:main
+      volumes:
+        - ${{ github.workspace }}:/iac
+    steps:
+    - uses: actions/checkout@main
+    - name: ValidIaC secure check
+      run: |
+        /validiac/bin/validiac secure /iac/${{ env.TFPath }}/*.tf
+        

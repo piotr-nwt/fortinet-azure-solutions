@@ -25,8 +25,8 @@ variable "PASSWORD" {
 ##############################################################################################################
 
 variable "FGT_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2022') or byol (Bring your own license 'fortinet_fg-vm')"
-  default     = "fortinet_fg-vm_payg_2022"
+  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2023') or byol (Bring your own license 'fortinet_fg-vm')"
+  default     = "fortinet_fg-vm_payg_2023"
 }
 
 variable "FGT_VERSION" {
@@ -42,11 +42,11 @@ variable "FGT_BYOL_LICENSE_FILE_B" {
   default = ""
 }
 
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE_A" {
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
   default = ""
 }
 
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE_B" {
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
   default = ""
 }
 
@@ -110,7 +110,6 @@ variable "subnet" {
     "1" = "172.16.136.0/26"  # External
     "2" = "172.16.136.64/26" # Internal
     "3" = "172.16.137.0/24"  # Protected a
-    "4" = "172.16.138.0/24"  # Protected b
   }
 }
 
@@ -122,7 +121,6 @@ variable "subnetmask" {
     "1" = "26" # External
     "2" = "26" # Internal
     "3" = "24" # Protected a
-    "4" = "24" # Protected b
   }
 }
 

@@ -92,11 +92,14 @@
         "fortiGateLicenseBYOL": {
             "value": ""
         },
-        "fortiGateLicenseFlexVM": {
+        "fortiGateLicenseFortiFlex": {
             "value": ""
         },
         "location": {
             "value": ""
+        },
+        "tagsByResource": {
+            "value": {}
         },
         "fortinetTags": {
             "value": {

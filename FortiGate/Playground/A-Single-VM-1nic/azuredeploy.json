@@ -25,7 +25,7 @@
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg_2022"
+        "fortinet_fg-vm_payg_2023"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -162,7 +162,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2021-04-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -177,7 +177,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -197,7 +197,7 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-01-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -238,7 +238,7 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-01-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -272,7 +272,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2022-03-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -303,7 +303,7 @@
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
             "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "version": "[parameters('FortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"

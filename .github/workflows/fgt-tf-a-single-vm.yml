@@ -5,10 +5,12 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiGate/Terraform/A-Single-VM/*.tf'
-    - 'FortiGate/Terraform/A-Single-VM/*.tpl'
-    - 'FortiGate/Terraform/A-Single-VM/*.hcl'
+      - 'FortiGate/Terraform/A-Single-VM/*.tf'
+      - 'FortiGate/Terraform/A-Single-VM/*.tpl'
+      - 'FortiGate/Terraform/A-Single-VM/*.hcl'
 
 jobs:
   terraform_AA:
@@ -26,7 +28,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
 
     - name: "Setup Terraform"
       uses: hashicorp/setup-terraform@v1

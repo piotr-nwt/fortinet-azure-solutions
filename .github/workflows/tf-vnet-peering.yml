@@ -5,10 +5,12 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiGate/Terraform/VNET-Peering/**.tf'
-    - 'FortiGate/Terraform/VNET-Peering/**.tpl'
-    - 'FortiGate/Terraform/VNET-Peering/**.hcl'
+      - 'FortiGate/Terraform/VNET-Peering/**.tf'
+      - 'FortiGate/Terraform/VNET-Peering/**.tpl'
+      - 'FortiGate/Terraform/VNET-Peering/**.hcl'
 
 jobs:
   terraform_VNETP:
@@ -26,7 +28,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
 
     - name: "Setup Terraform"
       uses: hashicorp/setup-terraform@v1
