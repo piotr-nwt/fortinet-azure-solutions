@@ -36,7 +36,7 @@ Thanks to such approach you are able to split the roles and use:
 -AA HA FortiGate cluster for East-West and ExpressRoute filtering
 
 
- ![Dual-ars_dual_FGT_with_EX](../AP-AA-withARS1&2_Ex_route.png)
+ ![Dual-ars_dual_FGT_with_EX](../Dual-ARS/images/AP-AA-withARS1&2_Ex_route.png)
 
 
 
