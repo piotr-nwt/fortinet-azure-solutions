@@ -27,8 +27,16 @@ If traffic from ExpressRoute to the spoke VNets is to be sent to a FortiGate NVA
  ![Dual-ars_with_EX](../Dual-ARS/images/route-injection-split-route-server-with-firewall.png)
 
 
+## Dual Route server architecture with FortiGate AP HA and AA HA clusters
+
+In some scenarios like high throughput architecture you might want to expand the previous architecture and add second FortiGate AAA HA cluster.
+Thanks to such approach you are able to split the roles and use:
+
+-AP HA FortiGate cluster for North-South fitlering
+-AA HA FortiGate cluster for East-West and ExpressRoute filtering
 
 
+ ![Dual-ars_dual_FGT_with_EX](../AP-AA-withARS1&2_Ex_route.png)
 
 
 
