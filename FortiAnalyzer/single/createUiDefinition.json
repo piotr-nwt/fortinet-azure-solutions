@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyser Name Prefix",
+        "label": "FortiAnalyzer Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -71,25 +71,314 @@
         "visible": true
       },
       {
-        "name": "fortiAnalyzerImageVersion",
+        "name": "imageSku",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiAnalyzer Image SKU",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": "BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fortinet-fortianalyzer"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image Version",
-        "defaultValue": "latest",
+        "defaultValue": "7.6.3",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "6.4.6",
-              "value": "6.4.6"
+              "label": "latest",
+              "value": "latest"
+            },
+            {
+              "label": "8.0.2",
+              "value": "8.0.2"
+            },
+            {
+              "label": "8.0.1",
+              "value": "8.0.1"
+            },
+            {
+              "label": "8.0.0",
+              "value": "8.0.0"
+            },
+            {
+              "label": "7.6.8",
+              "value": "7.6.8"
+            },
+            {
+              "label": "7.6.7",
+              "value": "7.6.7"
+            },
+            {
+              "label": "7.6.6",
+              "value": "7.6.6"
+            },
+            {
+              "label": "7.6.5",
+              "value": "7.6.5"
+            },
+            {
+              "label": "7.6.4",
+              "value": "7.6.4"
+            },
+            {
+              "label": "7.6.3",
+              "value": "7.6.3"
+            },
+            {
+              "label": "7.6.2",
+              "value": "7.6.2"
+            },
+            {
+              "label": "7.6.1",
+              "value": "7.6.1"
+            },
+            {
+              "label": "7.6.0",
+              "value": "7.6.0"
+            },
+            {
+              "label": "7.4.8",
+              "value": "7.4.8"
+            },
+            {
+              "label": "7.4.7",
+              "value": "7.4.7"
+            },
+            {
+              "label": "7.4.6",
+              "value": "7.4.6"
+            },
+            {
+              "label": "7.4.5",
+              "value": "7.4.5"
+            },
+            {
+              "label": "7.4.4",
+              "value": "7.4.4"
+            },
+            {
+              "label": "7.4.3",
+              "value": "7.4.3"
+            },
+            {
+              "label": "7.4.2",
+              "value": "7.4.2"
+            },
+            {
+              "label": "7.4.12",
+              "value": "7.4.12"
+            },
+            {
+              "label": "7.4.11",
+              "value": "7.4.11"
+            },
+            {
+              "label": "7.4.10",
+              "value": "7.4.10"
+            },
+            {
+              "label": "7.4.1",
+              "value": "7.4.1"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
+            },
+            {
+              "label": "7.2.9",
+              "value": "7.2.9"
+            },
+            {
+              "label": "7.2.8",
+              "value": "7.2.8"
+            },
+            {
+              "label": "7.2.7",
+              "value": "7.2.7"
+            },
+            {
+              "label": "7.2.6",
+              "value": "7.2.6"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.2",
+              "value": "7.2.2"
+            },
+            {
+              "label": "7.2.13",
+              "value": "7.2.13"
+            },
+            {
+              "label": "7.2.11",
+              "value": "7.2.11"
+            },
+            {
+              "label": "7.2.10",
+              "value": "7.2.10"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.0.9",
+              "value": "7.0.9"
+            },
+            {
+              "label": "7.0.7",
+              "value": "7.0.7"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.14",
+              "value": "7.0.14"
+            },
+            {
+              "label": "7.0.13",
+              "value": "7.0.13"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.10",
+              "value": "7.0.10"
             },
             {
               "label": "7.0.1",
               "value": "7.0.1"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.15",
+              "value": "6.4.15"
+            },
+            {
+              "label": "6.4.14",
+              "value": "6.4.14"
+            },
+            {
+              "label": "6.4.13",
+              "value": "6.4.13"
+            },
+            {
+              "label": "6.4.12",
+              "value": "6.4.12"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.1",
+              "value": "6.4.1"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.2.3",
+              "value": "6.2.3"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.1",
+              "value": "6.2.1"
+            },
+            {
+              "label": "6.2.0",
+              "value": "6.2.0"
             }
           ]
         },
@@ -128,59 +417,75 @@
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiAnalyzer VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
-                  "Standard_D2s_v3",
-                  "Standard_D2_v2",
-                  "Standard_D3_v2",
-                  "Standard_D4_v2",
-                  "Standard_D5_v2",
-                  "Standard_DS2_v2",
-                  "Standard_DS3_v2",
                   "Standard_DS4_v2",
                   "Standard_DS5_v2",
-                  "Standard_D2_v3",
                   "Standard_D4_v3",
                   "Standard_D8_v3",
                   "Standard_D16_v3",
-                  "Standard_D2s_v3",
-                  "Standard_D4s_v3",
-                  "Standard_D8s_v3",
-                  "Standard_D16s_v3",
-                  "Standard_D2a_v4",
                   "Standard_D4a_v4",
                   "Standard_D8a_v4",
                   "Standard_D16a_v4",
-                  "Standard_D2as_v4",
+                  "Standard_D32a_v4",
+                  "Standard_D48a_v4",
+                  "Standard_D64a_v4",
+                  "Standard_D96a_v4",
                   "Standard_D4as_v4",
                   "Standard_D8as_v4",
-                  "Standard_D16as_v4"
+                  "Standard_D16as_v4",
+                  "Standard_D32as_v4",
+                  "Standard_D48as_v4",
+                  "Standard_D64as_v4",
+                  "Standard_D96as_v4",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D48_v5",
+                  "Standard_D64_v5",
+                  "Standard_D96_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D48s_v5",
+                  "Standard_D64s_v5",
+                  "Standard_D96s_v5"
                 ],
                 "constraints": {
                   "allowedValues": [
-                    "Standard_DS2_v2",
-                    "Standard_D2_v2",
-                    "Standard_D3_v2",
-                    "Standard_D4_v2",
-                    "Standard_D5_v2",
-                    "Standard_DS2_v2",
-                    "Standard_DS3_v2",
                     "Standard_DS4_v2",
                     "Standard_DS5_v2",
-                    "Standard_D2_v3",
                     "Standard_D4_v3",
                     "Standard_D8_v3",
                     "Standard_D16_v3",
-                    "Standard_D2s_v3",
-                    "Standard_D4s_v3",
-                    "Standard_D8s_v3",
-                    "Standard_D16s_v3",
-                    "Standard_D2a_v4",
                     "Standard_D4a_v4",
                     "Standard_D8a_v4",
                     "Standard_D16a_v4",
-                    "Standard_D2as_v4",
+                    "Standard_D32a_v4",
+                    "Standard_D48a_v4",
+                    "Standard_D64a_v4",
+                    "Standard_D96a_v4",
                     "Standard_D4as_v4",
                     "Standard_D8as_v4",
-                    "Standard_D16as_v4"
+                    "Standard_D16as_v4",
+                    "Standard_D32as_v4",
+                    "Standard_D48as_v4",
+                    "Standard_D64as_v4",
+                    "Standard_D96as_v4",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D48_v5",
+                    "Standard_D64_v5",
+                    "Standard_D96_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D48s_v5",
+                    "Standard_D64s_v5",
+                    "Standard_D96s_v5"
                   ]
                 },
                 "options": {
@@ -424,9 +729,9 @@
               {
                 "name": "fazLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortimanager')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -434,7 +739,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortimanager')]"
+                "visible": true
               },
               {
                 "name": "fazcontent",
@@ -451,7 +756,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fazLicense.fazLicenseFortiFlexCheck))]"
+                "visible": "[not(steps('instance').fazLicense.fazLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fazfortiflex",
@@ -464,27 +769,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortimanager'),steps('instance').fazLicense.fazLicenseFortiFlexCheck)]"
-              },
-              {
-                "name": "fazLicensePAYGInfo",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
-                },
-                "visible": "[not(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortimanager'))]"
-              },
-              {
-                "name": "fazLicenseMigrateInfo",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "Migration between BYOL and PAYG is possible using a redeployment of the VM.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/81283/migrating-a-fortigate-vm-instance-between-license-types"
-                },
-                "visible": true
+                "visible": "[steps('instance').fazLicense.fazLicenseFortiFlexCheck]"
               }
             ]
           },
@@ -543,7 +828,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiAnalyzer-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiAnalyzer-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -610,7 +895,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FAZPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiAnalyzerNamePrefix'),''),'FAZPublicIP',concat(basics('fortiAnalyzerNamePrefix'),'-faz-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -720,8 +1005,8 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSKU": "fortinet-fortianalyzer",
-      "imageVersion": "[basics('fortiAnalyzerImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
@@ -737,7 +1022,6 @@
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

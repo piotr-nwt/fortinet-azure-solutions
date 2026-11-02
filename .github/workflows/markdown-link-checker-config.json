@@ -2,12 +2,35 @@
   "ignorePatterns": [
     {
       "pattern": "^https://portal.local.azurestack.external"
+    },
+    {
+      "pattern": "^https://community.fortinet.com/"
+    },
+    {
+      "pattern": "^https://github.com/terraform-providers/terraform-provider-azurerm/issues/260"
+    },
+    {
+      "pattern": "https://azuremarketplace.microsoft.com/"
+    },
+    {
+      "pattern": "https://marketplace.microsoft.com/"
+    },
+    {
+      "pattern": "https://shell.azure.com/"
     }
   ],
   "replacementPatterns": [
     {
       "pattern": "^/../../",
       "replacement": "https://github.com/40net-cloud/fortinet-azure-solutions/"
+    }
+  ],
+  "httpHeaders": [
+    {
+      "urls": ["https://learn.microsoft.com/", "https://docs.microsoft.com/", "https://www.microsoft.com/", "https://azuremarketplace.microsoft.com/","https://marketplace.microsoft.com/", "https://community.fortinet.com/"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0"
+      }
     }
   ],
   "timeout": "20s",

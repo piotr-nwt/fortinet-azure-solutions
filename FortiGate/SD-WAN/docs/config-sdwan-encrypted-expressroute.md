@@ -172,7 +172,7 @@ Firewall policy allowing traffic from on-premise network 172.16.248.0/24 to Azur
 You can also combine created VPN tunnels into SD-WAN interface on your on-premise firewall to steer the traffic according to your needs.
 Below is shown configuration of on-premise box.
 
-[SD-WAN instruction](https://help.fortinet.com/fos60hlp/60/Content/FortiOS/fortigate-networking/SD-WAN/Configuring_basic_SD-WAN.htm)
+[SD-WAN instruction](https://docs.fortinet.com/document/fortigate/8.0.0/administration-guide/19246/sd-wan)
 
 First you need to remove VPN interfaces references in routes and security policies as described in above document.
 
@@ -182,7 +182,7 @@ On on-premise FTG create SD-WAN interface consisting of both VPN tunnels.
 </p>
 
 
-Configure SD-WAN load balancing according to your needs (see [SD-WAN instruction](https://help.fortinet.com/fos60hlp/60/Content/FortiOS/fortigate-networking/SD-WAN/Configuring_basic_SD-WAN.htm))
+Configure SD-WAN load balancing according to your needs (see [SD-WAN instruction](https://docs.fortinet.com/document/fortigate/7.6.0/sd-wan-sd-branch-architecture-for-mssps/902869/basic-sd-wan-configuration))
 
 Configure Static route using previously created SD-WAN interface where 172.16.137.0/24 is a local network behind Azure FortiGates that should be reachable via SD-WAN interface.
 <p align="center">

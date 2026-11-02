@@ -56,7 +56,7 @@
           "password": "FortiWeb password",
           "confirmPassword": "Confirm password"
         },
-        "toolTip": "Password for the Virtual Machine",
+        "toolTip": "Password for the virtual machine",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
@@ -81,11 +81,11 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image SKU",
         "defaultValue": "Bring Your Own License",
-        "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+        "toolTip": "Identifies whether to use PAYG (on-demand licensing) or the BYOL licensing model (where the license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
@@ -102,7 +102,7 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image Version",
         "defaultValue": "latest",
@@ -111,44 +111,116 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "6.1.0",
-              "value": "6.1.0"
+              "label": "latest",
+              "value": "latest"
             },
             {
-              "label": "6.3.17",
-              "value": "6.3.17"
+              "label": "8.0.8",
+              "value": "8.0.8"
             },
             {
-              "label": "7.0.0",
-              "value": "7.0.0"
+              "label": "8.0.5",
+              "value": "8.0.5"
             },
             {
-              "label": "7.0.3",
-              "value": "7.0.3"
+              "label": "8.0.4",
+              "value": "8.0.4"
             },
             {
-              "label": "7.0.8",
-              "value": "7.0.8"
+              "label": "8.0.2",
+              "value": "8.0.2"
             },
             {
-              "label": "7.2.0",
-              "value": "7.2.0"
+              "label": "8.0.1",
+              "value": "8.0.1"
             },
             {
-              "label": "7.2.3",
-              "value": "7.2.3"
+              "label": "7.6.7",
+              "value": "7.6.7"
             },
             {
-              "label": "7.2.4",
-              "value": "7.2.4"
+              "label": "7.6.6",
+              "value": "7.6.6"
+            },
+            {
+              "label": "7.6.4",
+              "value": "7.6.4"
+            },
+            {
+              "label": "7.6.1",
+              "value": "7.6.1"
+            },
+            {
+              "label": "7.6.0",
+              "value": "7.6.0"
+            },
+            {
+              "label": "7.4.12",
+              "value": "7.4.12"
+            },
+            {
+              "label": "7.4.11",
+              "value": "7.4.11"
+            },
+            {
+              "label": "7.4.9",
+              "value": "7.4.9"
+            },
+            {
+              "label": "7.4.5",
+              "value": "7.4.5"
+            },
+            {
+              "label": "7.4.4",
+              "value": "7.4.4"
+            },
+            {
+              "label": "7.4.3",
+              "value": "7.4.3"
             },
             {
               "label": "7.4.0",
               "value": "7.4.0"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.2.12",
+              "value": "7.2.12"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "6.3.17",
+              "value": "6.3.17"
+            },
+            {
+              "label": "6.1.0",
+              "value": "6.1.0"
             }
           ]
         },
@@ -174,7 +246,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "For this FortiWeb deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
+                  "text": "For this FortiWeb deployment, we recommend using general-purpose or compute-optimized virtual machines. A selection of supported instance sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortiweb-public-cloud/latest/about-fortiweb-for-azure/527834/instance-type-support"
@@ -185,9 +257,9 @@
                 "name": "selection",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Size",
-                "toolTip": "Select the instance size of your FortiWeb VM solution. Minimum 4 NICs are required.",
+                "toolTip": "Select the instance size of your FortiWeb VM solution. Any supported instance type with 2 vNICs.",
                 "recommendedSizes": [
-                  "Standard_F2s",
+                  "Standard_F2s_v2",
                   "Standard_F1",
                   "Standard_F2",
                   "Standard_F4",
@@ -198,7 +270,6 @@
                   "Standard_F4s",
                   "Standard_F8s",
                   "Standard_F16s",
-                  "Standard_F2s_v2",
                   "Standard_F4s_v2",
                   "Standard_F8s_v2",
                   "Standard_F16s_v2",
@@ -222,11 +293,51 @@
                   "Standard_D4s_v3",
                   "Standard_D8s_v3",
                   "Standard_D16s_v3",
-                  "Standard_D32s_v3"
+                  "Standard_D32s_v3",
+                  "Standard_D2_v4",
+                  "Standard_D4_v4",
+                  "Standard_D8_v4",
+                  "Standard_D16_v4",
+                  "Standard_D32_v4",
+                  "Standard_D2s_v4",
+                  "Standard_D4s_v4",
+                  "Standard_D8s_v4",
+                  "Standard_D16s_v4",
+                  "Standard_D32s_v4",
+                  "Standard_D2a_v4",
+                  "Standard_D4a_v4",
+                  "Standard_D8a_v4",
+                  "Standard_D16a_v4",
+                  "Standard_D32a_v4",
+                  "Standard_D2as_v4",
+                  "Standard_D4as_v4",
+                  "Standard_D8as_v4",
+                  "Standard_D16as_v4",
+                  "Standard_D32as_v4",
+                  "Standard_D2_v5",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D2s_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D2as_v5",
+                  "Standard_D4as_v5",
+                  "Standard_D8as_v5",
+                  "Standard_D16as_v5",
+                  "Standard_D32as_v5",
+                  "Standard_D2ads_v5",
+                  "Standard_D4ads_v5",
+                  "Standard_D8ads_v5",
+                  "Standard_D16ads_v5",
+                  "Standard_D32ads_v5"
                 ],
                 "constraints": {
                   "allowedValues": [
-                    "Standard_F2s",
+                    "Standard_F2s_v2",
                     "Standard_F1",
                     "Standard_F2",
                     "Standard_F4",
@@ -237,7 +348,6 @@
                     "Standard_F4s",
                     "Standard_F8s",
                     "Standard_F16s",
-                    "Standard_F2s_v2",
                     "Standard_F4s_v2",
                     "Standard_F8s_v2",
                     "Standard_F16s_v2",
@@ -261,7 +371,47 @@
                     "Standard_D4s_v3",
                     "Standard_D8s_v3",
                     "Standard_D16s_v3",
-                    "Standard_D32s_v3"
+                    "Standard_D32s_v3",
+                    "Standard_D2_v4",
+                    "Standard_D4_v4",
+                    "Standard_D8_v4",
+                    "Standard_D16_v4",
+                    "Standard_D32_v4",
+                    "Standard_D2s_v4",
+                    "Standard_D4s_v4",
+                    "Standard_D8s_v4",
+                    "Standard_D16s_v4",
+                    "Standard_D32s_v4",
+                    "Standard_D2a_v4",
+                    "Standard_D4a_v4",
+                    "Standard_D8a_v4",
+                    "Standard_D16a_v4",
+                    "Standard_D32a_v4",
+                    "Standard_D2as_v4",
+                    "Standard_D4as_v4",
+                    "Standard_D8as_v4",
+                    "Standard_D16as_v4",
+                    "Standard_D32as_v4",
+                    "Standard_D2_v5",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D2s_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D2as_v5",
+                    "Standard_D4as_v5",
+                    "Standard_D8as_v5",
+                    "Standard_D16as_v5",
+                    "Standard_D32as_v5",
+                    "Standard_D2ads_v5",
+                    "Standard_D4ads_v5",
+                    "Standard_D8ads_v5",
+                    "Standard_D16ads_v5",
+                    "Standard_D32ads_v5"
                   ]
                 },
                 "options": {
@@ -271,7 +421,7 @@
                 "imageReference": {
                   "publisher": "Fortinet",
                   "offer": "fortinet_fortiweb-vm_v5",
-                  "sku": "[basics('fortiWebImageSKU')]"
+                  "sku": "[basics('imageSku')]"
                 },
                 "count": 2,
                 "visible": true
@@ -336,7 +486,7 @@
               {
                 "name": "fwbLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]",
+                "visible": "[equals(basics('imageSku'), 'fortinet_fw-vm')]",
                 "options": {
                   "text": "When using BYOL, you can upload the license file retrieved from support.fortinet.com here."
                 }
@@ -346,7 +496,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+                "visible": "[equals(basics('imageSku'), 'fortinet_fw-vm')]"
               },
               {
                 "name": "licenseacontent",
@@ -363,7 +513,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "licensebcontent",
@@ -380,7 +530,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fwbAfortiflex",
@@ -413,10 +563,10 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Warning",
-                  "text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used.",
+                  "text": "The Pay As You Go license was selected in the Basics step. Licenses uploaded here will not be used.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'))]"
+                "visible": "[not(equals(basics('imageSku'), 'fortinet_fw-vm'))]"
               },
               {
                 "name": "fwbLicenseMigrateInfo",
@@ -478,7 +628,7 @@
                   "subnet1": {
                     "label": "External Subnet",
                     "defaultValue": {
-                      "name": "ExternalSubnet",
+                      "name": "externalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -490,7 +640,7 @@
                   "subnet2": {
                     "label": "Internal subnet",
                     "defaultValue": {
-                      "name": "InternalSubnet",
+                      "name": "internalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -524,7 +674,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiWeb VM.",
+                  "text": "Enables SR-IOV support, allowing direct access from the NIC in the Azure infrastructure to the FortiWeb VM.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -536,7 +686,7 @@
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Accelerated Networking",
                 "defaultValue": "Enabled",
-                "toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
+                "toolTip": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -558,7 +708,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
+                  "text": "Accelerated Networking is supported on most general-purpose and compute-optimized instance sizes with two or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with four or more vCPUs. Enabling Accelerated Networking on an unsupported host will result in a connection failure. You can disable Accelerated Networking after deployment through the Azure portal or Azure CLI.",
                   "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
                 }
               }
@@ -579,7 +729,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for web and api services hosted behind the FortiWeb and management of the FortiWeb virtual machines from external. The management UI of the FortiWeb virtual machine is available on port HTTPS/40030 and HTTPS/40031."
+              "text": "The public IP will be used for web and API services hosted behind FortiWeb and for external management of the FortiWeb virtual machines. The management UIs of the FortiWeb virtual machines are available on HTTPS ports 40030 and 40031."
             }
           },
           {
@@ -614,7 +764,7 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "If you select None an internal Load Balancer will be deployed. This deployment uses standard SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "text": "If you select None, an internal load balancer will be deployed. This deployment uses Standard SKU public IPs and load balancers. For production, Microsoft recommends Standard SKU public IPs. Select the Standard SKU in the create-new option, or choose a Standard SKU public IP that you have already created. Microsoft Azure offers a migration path from a Basic SKU to a Standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
           }
@@ -634,7 +784,7 @@
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Error",
-              "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+              "text": "The external load balancer public IP is configured with the Basic SKU. Return to the previous step and use Standard SKU public IPs to support Azure Standard Load Balancers."
             },
             "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none')))]"
           },
@@ -723,10 +873,30 @@
                   "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
                 },
                 "options": {
-                  "hideConfirmation": true
+                  "hideConfirmation": false
                 },
                 "visible": true
               }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "label": "Tags",
+        "elements": [
+          {
+            "name": "tagsByResource",
+            "type": "Microsoft.Common.TagsByResource",
+            "toolTip": "Add tags to Azure resources",
+            "resources": [
+              "Microsoft.Compute/availabilitySets",
+              "Microsoft.Network/networkSecurityGroups",
+              "Microsoft.Network/publicIPAddresses",
+              "Microsoft.Network/networkInterfaces",
+              "Microsoft.Compute/virtualMachines",
+              "Microsoft.Network/virtualNetworks",
+              "Microsoft.Network/routeTables"
             ]
           }
         ]
@@ -734,8 +904,8 @@
     ],
     "outputs": {
       "fortiWebNamePrefix": "[basics('fortiWebNamePrefix')]",
-      "fortiWebImageSKU": "[basics('fortiWebImageSKU')]",
-      "fortiWebImageVersion": "[basics('fortiWebImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
@@ -746,10 +916,9 @@
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
       "fortiWebALicenseFortiFlex": "[steps('instance').fwbLicense.fwbAfortiflex]",
       "fortiWebBLicenseFortiFlex": "[steps('instance').fwbLicense.fwbBfortiflex]",
-      "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+      "publicIPNewOrExistingOrNone": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
-      "publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
@@ -763,7 +932,8 @@
       "haTenantId": "[steps('advanced').highavailability.hatenantid]",
       "haSubscriptionId": "[steps('advanced').highavailability.hasubscriptionid]",
       "haApplicationId": "[steps('advanced').highavailability.haapplicationid]",
-      "haApplicationSecret": "[steps('advanced').highavailability.haapplicationsecret]"
+      "haApplicationSecret": "[steps('advanced').highavailability.haapplicationsecret]",
+      "tagsByResource": "[steps('tags').tagsByResource]"
     }
   }
 }

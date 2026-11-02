@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v3.2.0
+      uses: actions/checkout@v6
 
     - name: Test ARM Templates - path
       id: armttktest
@@ -38,17 +38,17 @@ jobs:
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
 
     - name: Azure Login via Az module
-      uses: azure/login@v1.4.6
+      uses: azure/login@v3
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
     - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1.2.0
+      uses: azure/powershell@v2
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
-          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
+          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N ''
           Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
@@ -64,7 +64,7 @@ jobs:
         azPSVersion: "latest"
 
     - name: Post result to Teams
-      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      uses: freenet-actions/ms-teams-deploy-card@master #  or "./" if in a local set-up
       if: always()
       with:
         github-token: ${{ github.token }}

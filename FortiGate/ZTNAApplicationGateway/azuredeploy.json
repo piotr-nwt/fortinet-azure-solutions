@@ -39,47 +39,70 @@
     },
     "fortiGateImageVersion": {
       "type": "string",
-      "defaultValue": "7.2.4",
+      "defaultValue": "7.4.5",
       "allowedValues": [
-        "6.2.0",
-        "6.2.2",
-        "6.2.4",
-        "6.2.5",
-        "6.4.0",
-        "6.4.10",
-        "6.4.11",
-        "6.4.12",
-        "6.4.13",
-        "6.4.2",
-        "6.4.3",
-        "6.4.5",
-        "6.4.6",
-        "6.4.7",
-        "6.4.8",
-        "6.4.9",
-        "7.0.0",
-        "7.0.1",
-        "7.0.10",
-        "7.0.11",
-        "7.0.12",
-        "7.0.13",
-        "7.0.2",
-        "7.0.3",
-        "7.0.4",
-        "7.0.5",
-        "7.0.6",
-        "7.0.8",
-        "7.0.9",
-        "7.2.0",
-        "7.2.1",
-        "7.2.2",
-        "7.2.3",
-        "7.2.4",
-        "7.2.5",
-        "7.2.6",
-        "7.4.0",
+        "latest",
+        "7.6.0",
+        "7.4.11",
+        "7.4.9",
+        "7.4.8",
+        "7.4.7",
+        "7.4.6",
+        "7.4.5",
+        "7.4.4",
+        "7.4.3",
+        "7.4.2",
         "7.4.1",
-        "latest"
+        "7.4.0",
+        "7.2.13",
+        "7.2.12",
+        "7.2.11",
+        "7.2.10",
+        "7.2.9",
+        "7.2.8",
+        "7.2.7",
+        "7.2.6",
+        "7.2.5",
+        "7.2.4",
+        "7.2.3",
+        "7.2.2",
+        "7.2.1",
+        "7.2.0",
+        "7.0.18",
+        "7.0.17",
+        "7.0.15",
+        "7.0.14",
+        "7.0.13",
+        "7.0.12",
+        "7.0.11",
+        "7.0.10",
+        "7.0.9",
+        "7.0.8",
+        "7.0.6",
+        "7.0.5",
+        "7.0.4",
+        "7.0.3",
+        "7.0.2",
+        "7.0.1",
+        "7.0.0",
+        "6.4.16",
+        "6.4.15",
+        "6.4.13",
+        "6.4.12",
+        "6.4.11",
+        "6.4.10",
+        "6.4.9",
+        "6.4.8",
+        "6.4.7",
+        "6.4.6",
+        "6.4.5",
+        "6.4.3",
+        "6.4.2",
+        "6.4.0",
+        "6.2.5",
+        "6.2.4",
+        "6.2.2",
+        "6.2.0"
       ],
       "metadata": {
         "description": "Select the image version"
@@ -191,7 +214,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address, if no name is provided the default name will be the Resource Group Name as the Prefix and '-FGT-PIP' as the suffix"
+        "description": "Name of Public IP address, if no name is provided the default name will be the Resource Group Name as the Prefix and '-fgt-pip' as the suffix"
       }
     },
     "publicIP1ResourceGroup": {
@@ -423,7 +446,7 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetResourceGroup": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceGroup().name,parameters('vnetResourceGroup'))]",
     "customDataSystemGlobal": "[concat('config system global\nset admin-sport ', parameters('fortiGateAdminPort'), '\nend\n')]",
-    "customDataDashboard": "config system admin\n edit admin\n config gui-dashboard\n edit 0\n set name \"FortiView ZTNA Servers\"\n set vdom root\n set layout-type standalone\n set csf disable\n config widget\n edit 1\n set type fortiview\n set width 1\n set height 1\n set csf-device all\n set fortiview-type ztnaServer\n set fortiview-sort-by bytes\n set fortiview-timeframe 5min\n set fortiview-visualization table\n next\n end\n next\n end\n next\n end\n config system settings\n set gui-implicit-policy disable\n set gui-dos-policy disable\n set gui-dynamic-routing disable\n set gui-threat-weight disable\n set gui-file-filter disable\n set gui-application-control disable\n set gui-endpoint-control disable\n set gui-vpn disable\n set gui-wireless-controller disable\n set gui-traffic-shaping disable\n set gui-webfilter disable\n set gui-dnsfilter disable\n set allow-subnet-overlap enable\n end\n",
+    "customDataDashboard": "config system admin\n edit admin\n config gui-dashboard\n edit 0\n set name \"FortiView ZTNA Servers\"\n set vdom root\n set layout-type standalone\n set csf disable\n config widget\n edit 1\n set type fortiview\n set width 1\n set height 1\n set csf-device all\n set fortiview-type ztnaServer\n set fortiview-sort-by bytes\n set fortiview-timeframe 5min\n set fortiview-visualization table\n next\n end\n next\n end\n next\n end\n config system settings\n set gui-implicit-policy disable\n set gui-dos-policy disable\n set gui-dynamic-routing disable\n set gui-threat-weight disable\n set gui-file-filter disable\n set gui-application-control disable\n set gui-vpn disable\n set gui-wireless-controller disable\n set gui-traffic-shaping disable\n set gui-webfilter disable\n set gui-dnsfilter disable\n set allow-subnet-overlap enable\n end\n",
     "customDataFirewallAddress": "[concat('config firewall address\nedit webserver1\nset subnet ', parameters('backendWebServer'), ' 255.255.255.255\nnext\nend\n')]",
     "customDataFirewallAddressGroup": "[concat('config firewall addrgrp\nedit \"WebServer\"\nset member \"webserver1\"\nnext\nend\n')]",
     "customDataUserLocal": "[concat('config user local\nedit ', parameters('ztnaUsername'), '\nset type password\nset passwd ', parameters('ztnaPassword'), '\nnext\nend\n')]",
@@ -438,7 +461,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "pid-78f62ebc-9614-47cd-8b62-16543326c3ea-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -453,7 +476,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -480,7 +503,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "FGT-ZTNA-deployment",
       "dependsOn": [
         "[variables('vnetName')]"
@@ -504,16 +527,16 @@
           "fortiGateName": {
             "value": "[concat(parameters('fortiGateName'))]"
           },
-          "fortiGateImageSKU": {
+          "fortiGateImageSKU_x64": {
             "value": "[parameters('fortiGateImageSKU')]"
           },
-          "fortiGateImageVersion": {
+          "fortiGateImageVersion_x64": {
             "value": "[parameters('fortiGateImageVersion')]"
           },
           "fortiGateAdditionalCustomData": {
             "value": "[variables('customDataCombined')]"
           },
-          "instanceType": {
+          "instanceType_x64": {
             "value": "[parameters('instanceType')]"
           },
           "acceleratedNetworking": {

@@ -3,31 +3,55 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
         "adminPassword": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
         "fortiGateNamePrefix": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
-        "fortiGateImageSKU": {
-            "value": "fortinet_fg-vm"
+        "fortiGateLicenseType": {
+            "value": "fortinet_fg-vm_byol"
         },
-        "fortiGateImageVersion": {
-            "value": "latest"
+        "fortiGateInstanceArchitecture": {
+            "value": "x64"
+        },
+        "fortiGateHAPortMode": {
+            "value": "4-NIC"
+        },
+        "fortiGateImageVersion_x64": {
+            "value": "7.4.11"
+        },
+        "fortiGateImageVersion_x64_g2": {
+            "value": "7.6.6"
+        },
+        "fortiGateImageVersion_arm64": {
+            "value": "7.6.6"
         },
         "fortiGateAdditionalCustomData": {
             "value": ""
         },
-        "instanceType": {
-            "value": "Standard_F4s"
+        "instanceType_x64": {
+            "value": "Standard_D8s_v3"
+        },
+        "instanceType_x64_g2": {
+            "value": "Standard_D8_v5"
+        },
+        "instanceType_arm64": {
+            "value": "Standard_D8ps_v6"
         },
         "availabilityOptions": {
-            "value": "Availability Set"
+            "value": "Availability Zones"
         },
         "acceleratedNetworking": {
             "value": "true"
+        },
+        "acceleratedConnections": {
+            "value": false
+        },
+        "acceleratedConnectionsSku": {
+            "value": "A1"
         },
         "publicIP1NewOrExisting": {
             "value": "new"
@@ -44,29 +68,11 @@
         "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIP1AddressSku": {
-            "value": "Standard"
-        },
-        "publicIP1AddressType": {
-            "value": "Static"
-        },
         "publicIP2Name": {
             "value": ""
         },
         "publicIP2ResourceGroup": {
             "value": ""
-        },
-        "publicIP2AddressSku": {
-            "value": "Standard"
-        },
-        "publicIP2AddressType": {
-            "value": "Static"
-        },
-        "publicIP3AddressSku": {
-            "value": "Standard"
-        },
-        "publicIP3AddressType": {
-            "value": "Static"
         },
         "publicIP3Name": {
             "value": ""
@@ -152,17 +158,20 @@
         "fortiGateLicenseFortiFlexB": {
             "value": ""
         },
-        "location": {
+        "customImageReference": {
             "value": ""
         },
+        "location": {
+            "value": "" // TODO: Fill in parameter value
+        },
         "tagsByResource": {
-            "value": ""
+            "value": {}
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
-                "template": "Active-Passive-SDN",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925APSDN"
+              "publisher": "Fortinet",
+              "template": "Active-Passive-SDN",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925APSDN"
             }
         }
     }

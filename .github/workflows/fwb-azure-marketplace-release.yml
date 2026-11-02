@@ -1,0 +1,88 @@
+name: "[FWB] Azure Marketplace release"
+
+on:
+  push:
+    tags:
+      - "FWB-*"
+
+  workflow_dispatch:
+
+env:
+  PUBLISHER: fortinet
+  PRODUCT: FortiWeb
+  PRODUCTL: fortiweb
+  PRODUCTSHORT: FWB
+  PRODUCTOFFER: fortinet_fortiweb-vm_v5
+  PRODUCTSKU: fortinet_fw-vm
+
+jobs:
+  build:
+    name: Getting all data ready for publishing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login via Az module
+        uses: azure/login@v3
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
+
+      - name: Package and convert templates
+        uses: azure/powershell@v2
+        with:
+          inlineScript: |
+            function Get-LatestVersions {
+              param (
+                [string[]]$Versions
+              )
+              $parsedVersions = $Versions | ForEach-Object {
+                $versionParts = $_ -split '\.'
+                [pscustomobject]@{
+                  Major = [int]$versionParts[0]
+                  Minor = [int]$versionParts[1]
+                  Patch = [int]$versionParts[2]
+                  FullVersion = $_
+                }
+              }
+              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -gt 7 -or ($_.Major -eq 7 -and $_.Minor -ge 2) }
+              $filteredVersions = $filteredByMajor |
+                Group-Object -Property Major, Minor |
+                ForEach-Object {
+                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 1
+              }
+              $sortedVersions = $filteredVersions | Sort-Object -Property Major, Minor, Patch -Descending
+              $sortedVersions.FullVersion
+            }
+            $buildingBlocks = @("A-Single-VM", "Active-Active")
+            $marketplaceVersions = @()
+            $marketplaceVersionsUI = @()
+
+            $marketplaceVersions += @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version)
+            $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+
+            foreach ($buildingBlock in $buildingBlocks) {
+              $dest = "./releases/${buildingBlock}/"
+              [void](New-Item -Path "${dest}" -Type Directory)
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
+              $content.parameters.imageVersion.allowedValues = $marketplaceVersions
+              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter"
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
+              "" | Out-File -Append "${dest}/mainTemplate.json"
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+              $content.parameters.basics.Where({$_.Name.equals("imageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
+              "" | Out-File -Append "${dest}/createUiDefinition.json"
+
+              Compress-Archive -Path "./releases/${buildingBlock}/*" -DestinationPath "./releases/${env:PRODUCTL}-$($buildingBlock.ToLower())-azure-templates.zip"
+            }
+          azPSVersion: "latest"
+
+      - name: Upload release zips
+        shell: bash
+        run: |
+          gh release upload ${{github.ref_name}} ./releases/${{env.PRODUCTL}}-*.zip
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}

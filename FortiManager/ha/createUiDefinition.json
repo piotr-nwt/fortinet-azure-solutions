@@ -71,16 +71,16 @@
         "visible": true
       },
       {
-        "name": "fortiManagerImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image SKU",
-        "defaultValue": "Bring Your Own License",
+        "defaultValue": "Bring Your Own License or FortiFlex",
         "toolTip": "BYOL license model (where license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "Bring Your Own License",
+              "label": "Bring Your Own License or FortiFlex",
               "value": "fortinet-fortimanager"
             }
           ]
@@ -88,121 +88,297 @@
         "visible": true
       },
       {
-        "name": "fortiManagerImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
-        "defaultValue": "latest",
-        "toolTip": "Only 6.x has the A/P HA feature currently",
+        "defaultValue": "8.0.0",
+        "toolTip": "",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "6.2.0",
-              "value": "6.2.0"
+              "label": "latest",
+              "value": "latest"
             },
             {
-              "label": "6.2.1",
-              "value": "6.2.1"
+              "label": "8.0.2",
+              "value": "8.0.2"
             },
             {
-              "label": "6.2.2",
-              "value": "6.2.2"
+              "label": "8.0.1",
+              "value": "8.0.1"
             },
             {
-              "label": "6.2.3",
-              "value": "6.2.3"
+              "label": "8.0.0",
+              "value": "8.0.0"
             },
             {
-              "label": "6.2.5",
-              "value": "6.2.5"
+              "label": "7.6.8",
+              "value": "7.6.8"
             },
             {
-              "label": "6.4.0",
-              "value": "6.4.0"
+              "label": "7.6.7",
+              "value": "7.6.7"
             },
             {
-              "label": "6.4.1",
-              "value": "6.4.1"
+              "label": "7.6.6",
+              "value": "7.6.6"
             },
             {
-              "label": "6.4.10",
-              "value": "6.4.10"
+              "label": "7.6.5",
+              "value": "7.6.5"
             },
             {
-              "label": "6.4.11",
-              "value": "6.4.11"
+              "label": "7.6.4",
+              "value": "7.6.4"
             },
             {
-              "label": "6.4.2",
-              "value": "6.4.2"
+              "label": "7.6.3",
+              "value": "7.6.3"
             },
             {
-              "label": "6.4.5",
-              "value": "6.4.5"
+              "label": "7.6.2",
+              "value": "7.6.2"
             },
             {
-              "label": "6.4.6",
-              "value": "6.4.6"
+              "label": "7.6.1",
+              "value": "7.6.1"
             },
             {
-              "label": "6.4.7",
-              "value": "6.4.7"
+              "label": "7.6.0",
+              "value": "7.6.0"
             },
             {
-              "label": "6.4.8",
-              "value": "6.4.8"
+              "label": "7.4.8",
+              "value": "7.4.8"
             },
             {
-              "label": "6.4.9",
-              "value": "6.4.9"
+              "label": "7.4.7",
+              "value": "7.4.7"
             },
             {
-              "label": "7.0.0",
-              "value": "7.0.0"
+              "label": "7.4.6",
+              "value": "7.4.6"
             },
             {
-              "label": "7.0.1",
-              "value": "7.0.1"
+              "label": "7.4.5",
+              "value": "7.4.5"
             },
             {
-              "label": "7.0.2",
-              "value": "7.0.2"
+              "label": "7.4.4",
+              "value": "7.4.4"
             },
             {
-              "label": "7.0.3",
-              "value": "7.0.3"
+              "label": "7.4.3",
+              "value": "7.4.3"
             },
             {
-              "label": "7.0.4",
-              "value": "7.0.4"
+              "label": "7.4.2",
+              "value": "7.4.2"
             },
             {
-              "label": "7.0.5",
-              "value": "7.0.5"
+              "label": "7.4.12",
+              "value": "7.4.12"
             },
             {
-              "label": "7.0.6",
-              "value": "7.0.6"
+              "label": "7.4.11",
+              "value": "7.4.11"
             },
             {
-              "label": "7.0.7",
-              "value": "7.0.7"
+              "label": "7.4.10",
+              "value": "7.4.10"
             },
             {
-              "label": "7.2.0",
-              "value": "7.2.0"
+              "label": "7.4.1",
+              "value": "7.4.1"
             },
             {
-              "label": "7.2.1",
-              "value": "7.2.1"
+              "label": "7.4.0",
+              "value": "7.4.0"
+            },
+            {
+              "label": "7.2.9",
+              "value": "7.2.9"
+            },
+            {
+              "label": "7.2.8",
+              "value": "7.2.8"
+            },
+            {
+              "label": "7.2.7",
+              "value": "7.2.7"
+            },
+            {
+              "label": "7.2.6",
+              "value": "7.2.6"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
             },
             {
               "label": "7.2.2",
               "value": "7.2.2"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.2.13",
+              "value": "7.2.13"
+            },
+            {
+              "label": "7.2.11",
+              "value": "7.2.11"
+            },
+            {
+              "label": "7.2.10",
+              "value": "7.2.10"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.0.9",
+              "value": "7.0.9"
+            },
+            {
+              "label": "7.0.7",
+              "value": "7.0.7"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.14",
+              "value": "7.0.14"
+            },
+            {
+              "label": "7.0.13",
+              "value": "7.0.13"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.10",
+              "value": "7.0.10"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.15",
+              "value": "6.4.15"
+            },
+            {
+              "label": "6.4.14",
+              "value": "6.4.14"
+            },
+            {
+              "label": "6.4.13",
+              "value": "6.4.13"
+            },
+            {
+              "label": "6.4.12",
+              "value": "6.4.12"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.1",
+              "value": "6.4.1"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.2.3",
+              "value": "6.2.3"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.1",
+              "value": "6.2.1"
+            },
+            {
+              "label": "6.2.0",
+              "value": "6.2.0"
             }
           ]
         },
@@ -231,7 +407,7 @@
                   "text": "For this FortiManager deployment, it is recommended to use general purpose virtual machines. A selection of supported instances sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055"
+                    "uri": "https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/azure-administration-guide/351055"
                   }
                 }
               },
@@ -241,59 +417,67 @@
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiManager VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
-                  "Standard_D2s_v3",
-                  "Standard_D2_v2",
-                  "Standard_D3_v2",
-                  "Standard_D4_v2",
-                  "Standard_D5_v2",
-                  "Standard_DS2_v2",
-                  "Standard_DS3_v2",
                   "Standard_DS4_v2",
                   "Standard_DS5_v2",
-                  "Standard_D2_v3",
                   "Standard_D4_v3",
                   "Standard_D8_v3",
                   "Standard_D16_v3",
-                  "Standard_D2s_v3",
-                  "Standard_D4s_v3",
-                  "Standard_D8s_v3",
-                  "Standard_D16s_v3",
-                  "Standard_D2a_v4",
                   "Standard_D4a_v4",
                   "Standard_D8a_v4",
                   "Standard_D16a_v4",
-                  "Standard_D2as_v4",
                   "Standard_D4as_v4",
                   "Standard_D8as_v4",
-                  "Standard_D16as_v4"
+                  "Standard_D16as_v4",
+                  "Standard_D32as_v4",
+                  "Standard_D48as_v4",
+                  "Standard_D64as_v4",
+                  "Standard_D96as_v4",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D48_v5",
+                  "Standard_D64_v5",
+                  "Standard_D96_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D48s_v5",
+                  "Standard_D64s_v5",
+                  "Standard_D96s_v5"
                 ],
                 "constraints": {
                   "allowedValues": [
-                    "Standard_DS2_v2",
-                    "Standard_D2_v2",
-                    "Standard_D3_v2",
-                    "Standard_D4_v2",
-                    "Standard_D5_v2",
-                    "Standard_DS2_v2",
-                    "Standard_DS3_v2",
                     "Standard_DS4_v2",
                     "Standard_DS5_v2",
-                    "Standard_D2_v3",
                     "Standard_D4_v3",
                     "Standard_D8_v3",
                     "Standard_D16_v3",
-                    "Standard_D2s_v3",
-                    "Standard_D4s_v3",
-                    "Standard_D8s_v3",
-                    "Standard_D16s_v3",
-                    "Standard_D2a_v4",
                     "Standard_D4a_v4",
                     "Standard_D8a_v4",
                     "Standard_D16a_v4",
-                    "Standard_D2as_v4",
                     "Standard_D4as_v4",
                     "Standard_D8as_v4",
-                    "Standard_D16as_v4"
+                    "Standard_D16as_v4",
+                    "Standard_D32as_v4",
+                    "Standard_D48as_v4",
+                    "Standard_D64as_v4",
+                    "Standard_D96as_v4",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D48_v5",
+                    "Standard_D64_v5",
+                    "Standard_D96_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D48s_v5",
+                    "Standard_D64s_v5",
+                    "Standard_D96s_v5"
                   ]
                 },
                 "options": {
@@ -331,7 +515,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "Availability Set",
+                "defaultValue": "Availability Zones",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
@@ -479,9 +663,9 @@
               {
                 "name": "fmgLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -489,7 +673,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]"
+                "visible": true
               },
               {
                 "name": "fmgAcontent",
@@ -506,7 +690,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgBcontent",
@@ -523,7 +707,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgAfortiflex",
@@ -536,7 +720,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fmgLicense.fortiFlexCheck]"
               },
               {
                 "name": "fmgBfortiflex",
@@ -549,7 +733,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fmgLicense.fortiFlexCheck]"
               },
               {
                 "name": "fmgAserial",
@@ -578,6 +762,16 @@
                 "visible": "true"
               }
             ]
+          },
+          {
+            "name": "serialnrnotification",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": true,
+            "options": {
+              "icon": "Info",
+              "text": "The HA configuration requires the serialnumbers of both FortiManager VMs in order to complete the config. If the serialnumbers are not provided during deployment the FortiManager HA config needs to be performed manually afterwards.",
+              "uri": "https://docs.fortinet.com/document/fortimanager-public-cloud/7.4.0/azure-administration-guide/629099/deploying-fortimanager-ha-instances-on-azure"
+            }
           }
         ]
       },
@@ -585,10 +779,35 @@
         "name": "networking",
         "label": "Networking",
         "subLabel": {
-          "preValidation": "Configure internal networking",
+          "preValidation": "Configure networking",
           "postValidation": "Done"
         },
         "elements": [
+          {
+            "name": "options",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Architecture options",
+            "defaultValue": "Manual failover",
+            "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Manual failover",
+                  "value": "manual"
+                },
+                {
+                  "label": "VRRP automatic failover using a public IP attached to a secondary ipconfig",
+                  "value": "vrrp-external-vip"
+                },
+                {
+                  "label": "VRRP automatic failover using a secondary private IP",
+                  "value": "vrrp-internal-vip"
+                }
+              ]
+            },
+            "visible": true
+          },
           {
             "name": "virtualnetworksection",
             "type": "Microsoft.Common.Section",
@@ -614,7 +833,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'fortimanager-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -627,7 +846,7 @@
                   "subnet1": {
                     "label": "FortiManager Subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "fortimanagersubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -662,9 +881,17 @@
         },
         "elements": [
           {
+            "name": "publiciptextvrrp",
+            "type": "Microsoft.Common.TextBlock",
+            "visible": "[equals(steps('networking').options, 'vrrp-external-vip')]",
+            "options": {
+              "text": "Using VRRP automatic failover, a public IP address will be provisioned during deployment."
+            }
+          },
+          {
             "name": "publiciptext",
             "type": "Microsoft.Common.TextBlock",
-            "visible": true,
+            "visible": "[equals(steps('networking').options, 'manual')]",
             "options": {
               "text": "The public IP will be used for connect to the FortiManager. The public IP is optional. Selecting none will result in a FortiManager that is not accessible from the public internet. Other means like VPN connection or Experess Route are needed to connect to the unit in that case."
             }
@@ -681,7 +908,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGAPublicIP',concat(basics('namePrefix'),'-FMG-A-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-a-pip',concat(basics('namePrefix'),'-fmg-a-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -693,7 +920,7 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[equals(steps('networking').options, 'manual')]"
           },
           {
             "name": "publicip2",
@@ -707,7 +934,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGBPublicIP',concat(basics('namePrefix'),'-FMG-B-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-b-pip',concat(basics('namePrefix'),'-fmg-b-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -719,7 +946,33 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[equals(steps('networking').options, 'manual')]"
+          },
+          {
+            "name": "publicip3",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "External VIP",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to active FortiManager on a secondary IP",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-vip',concat(basics('namePrefix'),'-fmg-vip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": "[equals(steps('networking').options, 'vrrp-external-vip')]"
           },
           {
             "name": "standardsku",
@@ -727,8 +980,8 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
-              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
+              "text": "This deployment uses and forces the use of standard SKU public IP's. By 30 September 2025, the basic SKU will be retired.",
+              "uri": "https://azure.microsoft.com/en-gb/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/"
             }
           }
         ]
@@ -827,14 +1080,14 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSKU": "[basics('fortiManagerImageSKU')]",
-      "imageVersion": "[basics('fortiManagerImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
+      "dataDiskCount": "[int(steps('instance').datadisk.vmDataDiskCount)]",
       "dataDiskSize": "[steps('instance').datadisk.vmDataDiskSize]",
       "diskType": "[steps('instance').datadisk.diskType]",
       "fortiManagerLicenseBYOLA": "[steps('instance').fmgLicense.fmgAcontent]",
@@ -843,14 +1096,16 @@
       "fortiManagerLicenseFortiFlexB": "[steps('instance').fmgLicense.fmgBfortiflex]",
       "fortiManagerSerialNumberA": "[steps('instance').fmgLicense.fmgAserial]",
       "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBserial]",
+      "highavailabilityMethod": "[steps('networking').options]",
       "publicIP1NewOrExisting": "[steps('publicip').publicip1.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').publicip1.name]",
       "publicIP1ResourceGroup": "[steps('publicip').publicip1.resourceGroup]",
-      "publicIPAddress1Type": "[steps('publicip').publicip1.publicIPAllocationMethod]",
       "publicIP2NewOrExisting": "[steps('publicip').publicip2.newOrExistingOrNone]",
       "publicIP2Name": "[steps('publicip').publicip2.name]",
       "publicIP2ResourceGroup": "[steps('publicip').publicip2.resourceGroup]",
-      "publicIPAddress2Type": "[steps('publicip').publicip2.publicIPAllocationMethod]",
+      "publicIP3NewOrExisting": "[steps('publicip').publicip3.newOrExistingOrNone]",
+      "publicIP3Name": "[steps('publicip').publicip3.name]",
+      "publicIP3ResourceGroup": "[steps('publicip').publicip3.resourceGroup]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

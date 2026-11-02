@@ -41,13 +41,13 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "7.0.11",
-        "7.0.12",
-        "7.0.13",
-        "7.2.5",
-        "7.2.6",
-        "7.2.7",
-        "latest"
+        "latest",
+        "7.6.2",
+        "7.6.1",
+        "7.4.8",
+        "7.4.7",
+        "7.2.13",
+        "7.2.10"
       ],
       "metadata": {
         "description": "Select the image version"
@@ -464,7 +464,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2022-09-01",
       "name": "[concat(parameters('fortiProxyNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -479,8 +479,8 @@
     {
       "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
       "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2023-03-01",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -495,7 +495,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "name": "[variables('vnetName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
@@ -517,7 +517,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
@@ -547,7 +547,7 @@
       "condition": "[equals(parameters('publicIP1NewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -564,7 +564,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fpxNic1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -595,7 +595,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fpxVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "identity": {

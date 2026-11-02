@@ -12,7 +12,7 @@ In Microsoft Azure, this central security service hub is commonly implemented us
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 1 FortiGate firewalls in an active/passive deployment
+- 1 FortiGate firewall in a single-VM deployment
 - 3 VNETs (1 hub and 2 spoke networks) with each spoke network containing 1 subnet and the hub containing 2 extra protected subnets
 - VNET peering between HUB and spoke networks
 - User Defined Routes (UDR) for the different protected subnets
@@ -32,10 +32,8 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 ### Azure Portal
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
+[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
+[![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
 
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
@@ -44,13 +42,13 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
+After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access the FortiGate management GUI using the public management IP address over HTTPS on port 443.
 
 ## Requirements and limitations
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F4s VMs to deploy the required active/passive setup
+- The template will deploy standard F4s VMs to deploy the required single-VM setup
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.

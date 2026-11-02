@@ -9,46 +9,47 @@ on:
 env:
   PRODUCT: FortiAnalyzer
   PRODUCTSHORT: FAZ
-
+  PRODUCTOFFER: fortinet-fortianalyzer
+  PRODUCTSKU: fortinet-fortianalyzer
 
 jobs:
   ARM-FAZ-Version-Update:
     name: Update FAZ version list
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.2.0
+    - uses: actions/checkout@v6
 
     - name: Azure Login via Az module
-      uses: azure/login@v1.4.6
+      uses: azure/login@v3
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
     - name: Verify FAZ published version, update templates when new version found
-      uses: azure/powershell@v1.2.0
+      uses: azure/powershell@v2
       with:
         inlineScript: |
           $buildingBlocks = @("single", "ha")
-          $fazMarketplaceVersions = @()
-          $fazMarketplaceVersionsUI = @()
+          $marketplaceVersions = @()
+          $marketplaceVersionsUI = @()
 
-          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer"
-          $fazMarketplaceVersions += $($fortiManagerVersions).Version
-          $fazMarketplaceVersions += "latest"
-          $fazMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
-          $fazMarketplaceVersions | ForEach-Object { $fazMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $fazMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
+          $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          $marketplaceVersions += "latest"
+          [array]::Reverse($marketplaceVersions)
+          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
+          $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json"
-            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/mainTemplate.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/mainTemplate.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fazversionui.json" '(.parameters.basics[] | select( .name == \"imageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fazversionui.json" '(.parameters.basics[] | select( .name == "imageVersion" ) | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             }
           }
           Remove-Item "./fazversion.json"
@@ -57,7 +58,7 @@ jobs:
 
     - name: Create Pull Request
       id: cpr
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Update report

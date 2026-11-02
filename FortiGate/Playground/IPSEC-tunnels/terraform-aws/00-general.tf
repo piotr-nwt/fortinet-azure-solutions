@@ -6,7 +6,7 @@
 ##############################################################################################################
 
 # Prefix for all resources created for this deployment in Microsoft Azure
-variable "PREFIX" {
+variable "prefix" {
   description = "Added name to each deployed resource"
 }
 
@@ -14,12 +14,12 @@ variable "REGION" {
   description = "AWS region"
 }
 
-variable "USERNAME" {
+variable "username" {
   description = "Default username for FortiGate-VM in AWS is admin"
   default     = "admin"
 }
 
-variable "PASSWORD" {
+variable "password" {
   description = "Default password for admin user is the instance id"
   default     = ""
 }
@@ -37,7 +37,7 @@ variable "KEY_PAIR" {
 ##############################################################################################################
 
 variable VERSION {
-  default = "7.2.4"
+  default = "7.6.7"
 }
 
 variable "FGT_BYOL_LICENSE_FILE" {

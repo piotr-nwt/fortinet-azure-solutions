@@ -20,7 +20,7 @@
         "description": "Naming prefix for all deployed resources"
       }
     },
-    "fortiWebImageSKU": {
+    "imageSku": {
       "type": "string",
       "defaultValue": "fortinet_fw-vm",
       "allowedValues": [
@@ -28,26 +28,44 @@
         "fortinet_fw-vm_payg_v3"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
+        "description": "Identifies whether to use PAYG (on-demand licensing) or the BYOL licensing model (where the license is purchased separately)"
       }
     },
-    "fortiWebImageVersion": {
+    "imageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.1.0",
-        "6.3.17",
-        "7.0.0",
-        "7.0.3",
-        "7.0.8",
-        "7.2.0",
-        "7.2.3",
-        "7.2.4",
+        "latest",
+        "8.0.8",
+        "8.0.5",
+        "8.0.4",
+        "8.0.2",
+        "8.0.1",
+        "7.6.7",
+        "7.6.6",
+        "7.6.4",
+        "7.6.1",
+        "7.6.0",
+        "7.4.12",
+        "7.4.11",
+        "7.4.9",
+        "7.4.5",
+        "7.4.4",
+        "7.4.3",
         "7.4.0",
-        "latest"
+        "7.2.12",
+        "7.2.4",
+        "7.2.3",
+        "7.2.0",
+        "7.0.12",
+        "7.0.8",
+        "7.0.3",
+        "7.0.0",
+        "6.3.17",
+        "6.1.0"
       ],
       "metadata": {
-        "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
+        "description": "FortiWeb versions available in the Azure Marketplace. Additional versions can be downloaded from https://support.fortinet.com"
       }
     },
     "fortiWebAdditionalCustomData": {
@@ -128,7 +146,7 @@
         "Standard_D32ads_v5"
       ],
       "metadata": {
-        "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+        "description": "Virtual machine size selection; must be F4 or another instance that supports 4 NICs"
       }
     },
     "availabilityOptions": {
@@ -165,7 +183,7 @@
         "true"
       ],
       "metadata": {
-        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+        "description": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -184,7 +202,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element"
+        "description": "Name of the public IP address resource"
       }
     },
     "publicIPResourceGroup": {
@@ -192,28 +210,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs"
-      }
-    },
-    "publicIPType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "publicIPSKU": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
       }
     },
     "vnetNewOrExisting": {
@@ -224,7 +220,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
+        "description": "Identifies whether to use a new or existing virtual network"
       }
     },
     "vnetName": {
@@ -238,7 +234,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
+        "description": "Resource group containing the existing virtual network. For a new virtual network, the current resource group is used"
       }
     },
     "vnetAddressPrefix": {
@@ -266,7 +262,7 @@
       "type": "string",
       "defaultValue": "172.16.136.4",
       "metadata": {
-        "description": "Subnet 1 start address, 1 consecutive private IPs are required"
+        "description": "Subnet 1 start address; 1 consecutive private IP is required"
       }
     },
     "subnet2Name": {
@@ -308,11 +304,11 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-    "fortiWebLicenseFlexVM": {
+    "fortiWebLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiWeb BYOL FlexVM license token"
+        "description": "FortiWeb BYOL FortiFlex license token"
       }
     },
     "location": {
@@ -321,6 +317,10 @@
       "metadata": {
         "description": "Location for all resources."
       }
+    },
+    "tagsByResource": {
+      "type": "object",
+      "defaultValue": {}
     },
     "fortinetTags": {
       "type": "object",
@@ -340,7 +340,7 @@
     "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "customDataCombined": {
@@ -348,21 +348,21 @@
       "usr-cli": "[parameters('fortiWebAdditionalCustomData')]",
       "HaAzureInit": "enable",
       "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]",
-      "flex_token": "[parameters('fortiWebLicenseFlexVM')]"
+      "flex_token": "[parameters('fortiWebLicenseFortiFlex')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
-    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
-    "fwbNic1Name": "[concat(variables('fwbVmName'),'-Nic1')]",
+    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-fwb')]",
+    "fwbNic1Name": "[concat(variables('fwbVmName'),'-nic1')]",
     "fwbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic1Name'))]",
-    "fwbNic2Name": "[concat(variables('fwbVmName'),'-Nic2')]",
+    "fwbNic2Name": "[concat(variables('fwbVmName'),'-nic2')]",
     "fwbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic2Name'))]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-fwb-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
-    "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-nsg')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
@@ -380,7 +380,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2025-04-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "properties": {
         "mode": "Incremental",
@@ -394,9 +394,10 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2025-05-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -421,10 +422,8 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2022-01-01",
-      "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
+      "apiVersion": "2025-05-01",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "name": "[variables('NSGName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -474,7 +473,7 @@
           {
             "name": "AllowDevRegInbound",
             "properties": {
-              "description": "Allow 514 in for device registration",
+              "description": "Allow inbound port 514 for device registration",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "514",
@@ -516,7 +515,7 @@
           {
             "name": "AllowAllOutbound",
             "properties": {
-              "description": "Allow all out",
+              "description": "Allow all outbound traffic",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
@@ -533,25 +532,24 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2022-01-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "apiVersion": "2025-05-01",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('fwbVmName')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2022-01-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "apiVersion": "2025-05-01",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -581,10 +579,8 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2022-01-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "apiVersion": "2025-05-01",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -610,10 +606,8 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2022-03-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "apiVersion": "2025-04-01",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbVmName')]",
       "identity": {
         "type": "SystemAssigned"
@@ -621,7 +615,7 @@
       "location": "[parameters('location')]",
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
-        "name": "[parameters('fortiWebImageSKU')]",
+        "name": "[parameters('imageSku')]",
         "publisher": "[variables('imagePublisher')]",
         "product": "[variables('imageOffer')]"
       },
@@ -644,8 +638,8 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('fortiWebImageSKU')]",
-            "version": "[parameters('fortiWebImageVersion')]"
+            "sku": "[parameters('imageSku')]",
+            "version": "[parameters('imageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
@@ -683,9 +677,13 @@
     }
   ],
   "outputs": {
-    "fortiGatePublicIP": {
+    "fortiWebPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fortiWebFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '' )]"
     },
     "fwbCustomData": {
       "type": "string",

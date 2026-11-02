@@ -1,51 +1,137 @@
 #Requires -Modules Pester
 <#
 .SYNOPSIS
-    Tests a specific ARM template
+    Pester v5 tests for the A-Single-VM ARM template
+.DESCRIPTION
+    Validates the template structure, deploys to Azure, and verifies the FortiGate is
+    reachable. Run one scenario per invocation (x64, x64_g2, arm64) so that matrix
+    jobs in GitHub Actions can execute all three in parallel.
 .EXAMPLE
     Invoke-Pester
-.NOTES
-    This file has been created as an example of using Pester to evaluate ARM templates
+    ./test/Invoke-Tests.ps1 -Scenario x64_g2
 #>
 
 param (
-    [string]$sshkey,
-    [string]$sshkeypub
+    [string]$sshkey    = "",
+    [string]$sshkeypub = "",
+    [ValidateSet('x64', 'x64_g2', 'arm64')]
+    [string]$scenario  = "x64"
 )
-$VerbosePreference = "Continue"
 
 BeforeAll {
+    function script:Invoke-SshVerify {
+        # The management public IP can briefly reset the connection right after a
+        # prior SSH session closes, so retry a few times before failing the test.
+        param (
+            [string]$Target,
+            [string]$SshKey,
+            [string]$Commands
+        )
+
+        $sshArgs = @('-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
+        $attempts = 3
+        for ($i = 1; $i -le $attempts; $i++) {
+            $result = $Commands | ssh @sshArgs
+            if ($LASTEXITCODE -eq 0) { return $result }
+            if ($i -lt $attempts) {
+                Write-Host "SSH attempt $i to $Target failed (exit $LASTEXITCODE), retrying..."
+                Start-Sleep -Seconds 5
+            }
+        }
+        return $result
+    }
+
     $templateName = "A-Single-VM"
-    $sourcePath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName"
-    $scriptPath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName\test"
-    $templateFileName = "azuredeploy.json"
-    $templateFileLocation = "$sourcePath\$templateFileName"
-    $templateParameterFileName = "azuredeploy.parameters.json"
-    $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
-    # Basic Variables
-    $testsRandom = Get-Random 10001
-    $testsPrefix = "FORTIQA"
-    $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-    $testsAdminUsername = "azureuser"
-    $testsResourceGroupLocation = "westeurope"
+    # Resolve source path — works both in GitHub Actions and locally
+    $sourcePath = if ($env:GITHUB_WORKSPACE) {
+        "$env:GITHUB_WORKSPACE/FortiGate/$templateName"
+    } else {
+        (Resolve-Path "$PSScriptRoot/..").Path
+    }
 
-    # ARM Template Variables
-    $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
-    $config += Get-Content $sshkeypub
-    $config += "`" `n set password $testsResourceGroupName `n next `n end"
-    $publicIPName = "$testsPrefix-FGT-PIP"
-    $params = @{ 'adminUsername'=$testsAdminUsername
-                 'adminPassword'=$testsResourceGroupName
-                 'fortiGateNamePrefix'=$testsPrefix
-                 'fortiGateAdditionalCustomData'=$config
-                 'publicIP1Name'=$publicIPName
-               }
-    $ports = @(443, 22)
+    $templateFileLocation          = "$sourcePath/azuredeploy.json"
+    $templateParameterFileLocation = "$sourcePath/azuredeploy.parameters.json"
+
+    # Unique prefix per run to avoid resource name collisions
+    $testsRandom             = Get-Random 10001
+    $testsPrefix             = "FORTIQA"
+    $testsAdminUsername      = "azureuser"
+    $fgtVmName               = "$testsPrefix-fgt"
+    $publicIPName            = "$testsPrefix-fgt-pip"
+
+    # Scenario-specific location and ARM parameters
+    switch ($scenario) {
+        'x64' {
+            $testsResourceGroupLocation = "westeurope"
+            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64"
+        }
+        'x64_g2' {
+            $testsResourceGroupLocation = "francecentral"
+            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64_g2"
+        }
+        'arm64' {
+            $testsResourceGroupLocation = "francecentral"
+            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-arm64"
+        }
+    }
+
+    # FortiGate cloud-init: add a devops admin with the test SSH public key
+    $config = ""
+    if ($sshkeypub -and (Test-Path $sshkeypub)) {
+        $pubkey = Get-Content $sshkeypub
+        $config  = "config system console`nset output standard`nend`n"
+        $config += "config system global`nset gui-theme mariner`nend`n"
+        $config += "config system admin`nedit devops`nset accprofile super_admin`n"
+        $config += "set ssh-public-key1 `"$pubkey`"`n"
+        $config += "set password $testsResourceGroupName`nnext`nend"
+    }
+
+    $params = @{
+        adminUsername               = $testsAdminUsername
+        adminPassword               = $testsResourceGroupName
+        fortiGateNamePrefix         = $testsPrefix
+        fortiGateAdditionalCustomData = $config
+    }
+
+    switch ($scenario) {
+        'x64_g2' { $params['fortiGateInstanceArchitecture'] = '_g2'    }
+        'arm64'  { $params['fortiGateInstanceArchitecture'] = '_arm64' }
+    }
+
+    # Marketplace image coordinates — mirrors the template's imagePublisher /
+    # imageOffer / fortiGateImageSKU variables so the terms can be accepted
+    # before deployment (Azure rejects otherwise-valid deployments with
+    # MarketplacePurchaseEligibilityFailed if the plan hasn't been accepted).
+    $imagePublisher       = "fortinet"
+    $imageOffer           = "fortinet_fortigate-vm"
+    $fortiGateLicenseType = "fortinet_fg-vm_byol"
+    $architectureSuffix = switch ($scenario) {
+        'x64'    { '' }
+        'x64_g2' { '_g2' }
+        'arm64'  { '_arm64' }
+    }
+    $fortiGateImageVersion = switch ($scenario) {
+        'x64'    { '7.4.11' }
+        'x64_g2' { '8.0.0' }
+        'arm64'  { '8.0.0' }
+    }
+    $majorReleaseVersion = ($fortiGateImageVersion -replace '\.', '').Substring(0, 2)
+    $fortiGateImageSKU   = "${fortiGateLicenseType}_${majorReleaseVersion}${architectureSuffix}"
 }
 
-Describe 'FGT Single VM' {
+AfterAll {
+    if ($testsResourceGroupName -and
+        (Get-AzResourceGroup -Name $testsResourceGroupName -ErrorAction SilentlyContinue)) {
+        Write-Host "Cleaning up resource group: $testsResourceGroupName"
+        Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+    }
+}
+
+Describe "FGT Single VM - $scenario" {
+
     Context 'Validation' {
+
         It 'Has a JSON template' {
             $templateFileLocation | Should -Exist
         }
@@ -54,134 +140,169 @@ Describe 'FGT Single VM' {
             $templateParameterFileLocation | Should -Exist
         }
 
-        It 'Converts from JSON and has the expected properties' {
-            $expectedProperties = '$schema',
-            'contentVersion',
-            'outputs',
-            'parameters',
-            'resources',
-            'variables'
-            $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
+        It 'Converts from JSON and has the expected top-level properties' {
+            $expectedProperties = '$schema', 'contentVersion', 'outputs', 'parameters', 'resources', 'variables'
+            $templateProperties = (Get-Content $templateFileLocation |
+                ConvertFrom-Json -ErrorAction SilentlyContinue) |
+                Get-Member -MemberType NoteProperty | ForEach-Object Name
+            $diff = Compare-Object -ReferenceObject $expectedProperties -DifferenceObject $templateProperties |
+                Format-Table | Out-String
+            if ($diff.Trim()) { Write-Host "Diff: $diff" }
             $templateProperties | Should -Be $expectedProperties
         }
 
-        It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Compute/availabilitySets',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/routeTables',
-                                 'Microsoft.Network/networkSecurityGroups',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines'
-            $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+        It 'Declares the expected Azure resource types' {
+            $expectedResources = @(
+                'Microsoft.Resources/deployments',
+                'Microsoft.Compute/availabilitySets',
+                'Microsoft.Network/virtualNetworks',
+                'Microsoft.Network/routeTables',
+                'Microsoft.Network/networkSecurityGroups',
+                'Microsoft.Network/publicIPAddresses',
+                'Microsoft.Network/networkInterfaces',
+                'Microsoft.Network/networkInterfaces',
+                'Microsoft.Compute/virtualMachines'
+            )
+            $templateResources = (Get-Content $templateFileLocation |
+                ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+            $diff = Compare-Object -ReferenceObject $expectedResources -DifferenceObject $templateResources |
+                Format-Table | Out-String
+            if ($diff.Trim()) { Write-Host "Diff: $diff" }
             $templateResources | Should -Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
-                                          'adminPassword',
-                                          'adminUsername',
-                                          'availabilityOptions',
-                                          'availabilityZoneNumber',
-                                          'customImageReference',
-                                          'existingAvailabilitySetName',
-                                          'fortiGateAdditionalCustomData',
-                                          'fortiGateImageSKU',
-                                          'fortiGateImageVersion',
-                                          'fortiGateLicenseBYOL',
-                                          'fortiGateLicenseFortiFlex',
-                                          'fortiGateName',
-                                          'fortiGateNamePrefix',
-                                          'fortiManager',
-                                          'fortiManagerIP',
-                                          'fortiManagerSerial',
-                                          'fortinetTags',
-                                          'instanceType',
-                                          'location',
-                                          'publicIP1AddressType',
-                                          'publicIP1Name',
-                                          'publicIP1NewOrExisting',
-                                          'publicIP1ResourceGroup',
-                                          'publicIP1SKU',
-                                          'serialConsole',
-                                          'subnet1Name',
-                                          'subnet1Prefix',
-                                          'subnet1StartAddress',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet2StartAddress',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
-                                          'tagsByResource',
-                                          'vnetAddressPrefix',
-                                          'vnetName',
-                                          'vnetNewOrExisting',
-                                          'vnetResourceGroup'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
+            $expectedTemplateParameters = @(
+                'acceleratedConnections',
+                'acceleratedConnectionsSku',
+                'acceleratedNetworking',
+                'adminPassword',
+                'adminUsername',
+                'availabilityOptions',
+                'availabilityZoneNumber',
+                'customImageReference',
+                'customVHDSource',
+                'existingAvailabilitySetName',
+                'fortiGateAdditionalCustomData',
+                'fortiGateImageVersion_arm64',
+                'fortiGateImageVersion_x64',
+                'fortiGateImageVersion_x64_g2',
+                'fortiGateInstanceArchitecture',
+                'fortiGateLicenseBYOL',
+                'fortiGateLicenseFortiFlex',
+                'fortiGateLicenseType',
+                'fortiGateName',
+                'fortiGateNamePrefix',
+                'fortiManager',
+                'fortiManagerIP',
+                'fortiManagerSerial',
+                'fortinetTags',
+                'instanceType_arm64',
+                'instanceType_x64',
+                'instanceType_x64_g2',
+                'location',
+                'publicIP1Name',
+                'publicIP1NewOrExisting',
+                'publicIP1ResourceGroup',
+                'serialConsole',
+                'subnet1Name',
+                'subnet1Prefix',
+                'subnet1StartAddress',
+                'subnet2Name',
+                'subnet2Prefix',
+                'subnet2StartAddress',
+                'subnet3Name',
+                'subnet3Prefix',
+                'tagsByResource',
+                'VMSecurityTPM',
+                'VMSecurityType',
+                'vnetAddressPrefix',
+                'vnetName',
+                'vnetNewOrExisting',
+                'vnetResourceGroup'
+            )
+            $templateParameters = (Get-Content $templateFileLocation |
+                ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters |
+                Get-Member -MemberType NoteProperty | ForEach-Object Name | Sort-Object
+            $diff = Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters |
+                Format-Table | Out-String
+            if ($diff.Trim()) { Write-Host "Diff: $diff" }
             $templateParameters | Should -Be $expectedTemplateParameters
         }
-
     }
 
-    Context 'Deployment' {
+    Context "Deployment - $scenario" {
 
-        It "Test Deployment" {
-            New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+        It 'ARM template validation passes' {
+            New-AzResourceGroup -Name $testsResourceGroupName -Location $testsResourceGroupLocation
+            $result = Test-AzResourceGroupDeployment `
+                -ResourceGroupName $testsResourceGroupName `
+                -TemplateFile $templateFileLocation `
+                -TemplateParameterObject $params
+            Write-Host ($result | Format-Table -Wrap -AutoSize | Out-String)
+            $result.Count | Should -Not -BeGreaterThan 0
         }
-        It "Deployment" {
-            Write-Host ( "Deployment name: $testsResourceGroupName" )
 
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
-            Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
-            $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+        It 'Accepts the FortiGate marketplace image terms' {
+            $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -OfferType 'virtualmachine'
+            if (-not $terms.Accepted) {
+                Set-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -Accept
+                $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -OfferType 'virtualmachine'
+            }
+            $terms.Accepted | Should -Be $true
         }
-        It "Search deployment" {
-            $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
-            Write-Host ($result | Format-Table | Out-String)
-            $result | Should -Not -Be $null
+
+        It 'ARM template deploys successfully' {
+            $script:deployment = New-AzResourceGroupDeployment `
+                -ResourceGroupName $testsResourceGroupName `
+                -TemplateFile $templateFileLocation `
+                -TemplateParameterObject $params
+            Write-Host ("Provisioning state: " + $script:deployment.ProvisioningState)
+            $script:deployment.ProvisioningState | Should -Be "Succeeded"
+        }
+
+        It 'FortiGate VM exists in the resource group' {
+            $vm = Get-AzVM -ResourceGroupName $testsResourceGroupName -Name $fgtVmName
+            Write-Host ($vm | Format-Table | Out-String)
+            $vm | Should -Not -Be $null
         }
     }
 
-    Context 'Deployment test' {
+    Context "Connectivity - $scenario" {
 
         BeforeAll {
-            $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiGate public IP: " + $fgt)
-            $verify_commands = @'
-            config system console
-            set output standard
-            end
-            get system status
-            show system interface
-            show router static
-            diag debug cloudinit show
-            exit
-'@
-            $OFS = "`n"
-        }
-        It "FGT: Ports listening" {
-            ForEach( $port in $ports ) {
-                Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -BeTrue
+            # Prefer the deployment output; fall back to a direct lookup
+            $script:fgtPublicIP = if ($script:deployment -and $script:deployment.Outputs['fortiGatePublicIP']) {
+                $script:deployment.Outputs['fortiGatePublicIP'].Value
+            } else {
+                (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
             }
-        }
-        It "FGT: Verify FortiGate configuration" {
-            $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            $LASTEXITCODE | Should -Be "0"
-            Write-Host ("FGT CLI info: " + $result) -Separator `n
-            $result | Should -Not -BeLike "*Command fail*"
-        }
-    }
+            Write-Host "FortiGate public IP: $($script:fgtPublicIP)"
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
-            Write-Host ("ERROR: Cleanup disabled" )
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+            $script:verify_commands = @'
+get system status
+show system interface
+show router static
+diag debug cloudinit show
+exit
+'@
+        }
+
+        It 'HTTPS (443) is reachable' {
+            $listening = Test-Connection -TargetName $script:fgtPublicIP -TCPPort 443 -TimeoutSeconds 100
+            $listening | Should -Be $true
+        }
+
+        It 'SSH (22) is reachable' {
+            $listening = Test-Connection -TargetName $script:fgtPublicIP -TCPPort 22 -TimeoutSeconds 100
+            $listening | Should -Be $true
+        }
+
+        It 'SSH: FortiGate configuration applied correctly' {
+            $result = Invoke-SshVerify -Target $script:fgtPublicIP -SshKey $sshkey -Commands $script:verify_commands
+            $LASTEXITCODE | Should -Be 0
+            Write-Host ("FGT CLI output:`n" + ($result -join "`n"))
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 }

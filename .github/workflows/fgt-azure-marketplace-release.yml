@@ -3,10 +3,18 @@ name: "[FGT] Azure Marketplace release"
 on:
   push:
     tags:
-      - "*"
-      - "!FPX-*"
+      - "FGT-*"
 
   workflow_dispatch:
+
+env:
+  PUBLISHER: fortinet
+  PRODUCT: FortiGate
+  PRODUCTL: fortigate
+  PRODUCTSHORT: FGT
+  PRODUCTOFFER: fortinet_fortigate-vm_v5
+  PRODUCTSKU_X64: fortinet_fg-vm
+  PRODUCTSKU_ARM64: fortinet_fg-vm_arm64
 
 jobs:
   build:
@@ -16,49 +24,88 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Azure Login via Az module
-        uses: azure/login@v1.4.6
+        uses: azure/login@v3
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
           enable-AzPSSession: true
 
       - name: Package and convert templates
-        uses: azure/powershell@v1.2.0
+        uses: azure/powershell@v2
         with:
           inlineScript: |
+            function Get-LatestVersions {
+              param (
+                [string[]]$Versions
+              )
+              $parsedVersions = $Versions | ForEach-Object {
+                $versionParts = $_ -split '\.'
+                [pscustomobject]@{
+                  Major = [int]$versionParts[0]
+                  Minor = [int]$versionParts[1]
+                  Patch = [int]$versionParts[2]
+                  FullVersion = $_
+                }
+              }
+              $filteredByMajor = $parsedVersions | Where-Object { ($_.Major -ge 6 -and $_.Minor -ge 4) -or ($_.Major -ge 7 )}
+              $filteredVersions = $filteredByMajor |
+                Group-Object -Property Major, Minor |
+                ForEach-Object {
+                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 2
+              }
+              $sortedVersions = $filteredVersions | Sort-Object -Property Major, Minor, Patch -Descending
+              $sortedVersions.FullVersion
+            }
             $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
-            $fgtMarketplaceVersions = @()
-            $fgtMarketplaceVersionsUI = @()
+            $marketplaceVersions_x64 = @()
+            $marketplaceVersionsUI_x64 = @()
+            $marketplaceVersions_arm64 = @()
+            $marketplaceVersionsUI_arm64 = @()
 
-            $fortigateVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
-            $fgtMarketplaceVersions += $($fortigateVersions | Where-Object {$_.Version.StartsWith("6")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
-            $fgtMarketplaceVersions += $($fortigateVersions | Where-Object {$_.Version.StartsWith("7")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
-            $fgtMarketplaceVersions += "latest"
-            $fgtMarketplaceVersions | ForEach-Object { $fgtMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+            $marketplaceVersions_x64 = @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}").Version)
+            $marketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
+            $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
+            $marketplaceVersionsUI_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_ui_x64.json"
+
+            $marketplaceVersions_arm64 = @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_ARM64}").Version)
+            $marketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
+            $marketplaceVersions_arm64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
+            $marketplaceVersionsUI_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_ui_arm64.json"
 
             foreach ($buildingBlock in $buildingBlocks) {
               $dest = "./releases/${buildingBlock}/"
               [void](New-Item -Path "${dest}" -Type Directory)
 
-              $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
-              $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
-              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
-              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
-              "" | Out-File -Append "${dest}/mainTemplate.json"
-
-              $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
-              $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
-              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
-              "" | Out-File -Append "${dest}/createUiDefinition.json"
+              if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
+                Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./releases/${buildingBlock}/mainTemplate.json"
+                $content = Get-Content "./releases/${buildingBlock}/mainTemplate.json" -Raw
+                if (-Not ($content -match '(?<=\n)\z')) {
+                  "" | Out-File -Append "./releases/${buildingBlock}/mainTemplate.json"
+                }
+                Get-Content -Raw -Path "./releases/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./releases/${buildingBlock}/mainTemplate.json"
+                $content = Get-Content "./releases/${buildingBlock}/mainTemplate.json" -Raw
+                if (-Not ($content -match '(?<=\n)\z')) {
+                  "" | Out-File -Append "./releases/${buildingBlock}/mainTemplate.json"
+                }
+              }
+              if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
+                Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_ui_x64.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_x64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./releases/${buildingBlock}/createUiDefinition.json"
+                $content = Get-Content "./releases/${buildingBlock}/createUiDefinition.json" -Raw
+                if (-Not ($content -match '(?<=\n)\z')) {
+                  "" | Out-File -Append "./releases/${buildingBlock}/createUiDefinition.json"
+                }
+                Get-Content -Raw -Path "./releases/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_ui_arm64.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_arm64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./releases/${buildingBlock}/createUiDefinition.json"
+                $content = Get-Content "./releases/${buildingBlock}/createUiDefinition.json" -Raw
+                if (-Not ($content -match '(?<=\n)\z')) {
+                  "" | Out-File -Append "./releases/${buildingBlock}/createUiDefinition.json"
+                }
+              }
+              Compress-Archive -Path "./releases/${buildingBlock}/*" -DestinationPath "./releases/${env:PRODUCTL}-$($buildingBlock.ToLower())-azure-templates.zip"
             }
-            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortigate-azure-templates.zip"
           azPSVersion: "latest"
 
-      - name: upload-templates-zip
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./releases/fortigate-azure-templates.zip
-          asset_name: fortigate-azure-templates.zip
-          tag: ${{github.ref}}
-          overwrite: true
-          body: "FortiGate Azure Marketplace Release"
+      - name: Upload release zips
+        shell: bash
+        run: |
+          gh release upload ${{github.ref_name}} ./releases/${{env.PRODUCTL}}-*.zip
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}

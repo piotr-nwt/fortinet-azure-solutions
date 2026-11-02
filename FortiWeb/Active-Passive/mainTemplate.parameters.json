@@ -11,14 +11,17 @@
         "fortiWebNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortiWebImageSKU": {
+        "imageSku": {
             "value": "fortinet_fw-vm"
         },
-        "fortiWebImageVersion": {
+        "imageVersion": {
             "value": "latest"
         },
         "instanceType": {
             "value": "Standard_F2s"
+        },
+        "acceleratedNetworking": {
+            "value": "false"
         },
         "publicIPNewOrExisting": {
             "value": "new"
@@ -28,12 +31,6 @@
         },
         "publicIPResourceGroup": {
             "value": ""
-        },
-        "publicIPType": {
-            "value": "Static"
-        },
-        "publicIPSKU": {
-            "value": "Basic"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -48,7 +45,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "ExternalSubnet"
+            "value": "externalsubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
@@ -57,7 +54,7 @@
             "value": "172.16.136.4"
         },
         "subnet2Name": {
-            "value": "InternalSubnet"
+            "value": "internalsubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
@@ -65,8 +62,14 @@
         "subnet2StartAddress": {
             "value": "172.16.136.68"
         },
+        "serialConsole": {
+            "value": "yes"
+        },
         "location": {
             "value": ""
+        },
+        "tagsByResource": {
+            "value": {}
         },
         "fortinetTags": {
             "value": {

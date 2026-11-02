@@ -3,46 +3,70 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
         "adminPassword": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
         "fortiGateCount": {
-            "value": "## TO BE DEFINED ##"
+            "value": 2
         },
         "fortiGateNamePrefix": {
-            "value": "## TO BE DEFINED ##"
+            "value": "" // TODO: Fill in parameter value
         },
-        "fortiGateImageSKU": {
-            "value": "fortinet_fg-vm"
+        "fortiGateLicenseType": {
+            "value": "fortinet_fg-vm_byol"
         },
-        "fortiGateImageVersion": {
-            "value": "7.2.5"
+        "fortiGateInstanceArchitecture": {
+            "value": "x64"
+        },
+        "fortiGateImageVersion_x64": {
+            "value": "7.4.11"
+        },
+        "fortiGateImageVersion_x64_g2": {
+            "value": "7.6.6"
+        },
+        "fortiGateImageVersion_arm64": {
+            "value": "7.6.6"
         },
         "fortiGateAdditionalCustomData": {
             "value": ""
         },
-        "instanceType": {
-            "value": "Standard_F2s"
+        "fortiGateSessionSync": {
+            "value": false
+        },
+        "fortiGateProbeResponse": {
+            "value": true
+        },
+        "instanceType_x64": {
+            "value": "Standard_D4s_v3"
+        },
+        "instanceType_x64_g2": {
+            "value": "Standard_D4_v5"
+        },
+        "instanceType_arm64": {
+            "value": "Standard_D4ps_v6"
+        },
+        "1nicDeployment": {
+            "value": false
         },
         "externalLoadBalancer": {
             "value": true
         },
+        "outboundConnectivity": {
+            "value": "external-nat-device-or-elb"
+        },
         "availabilityOptions": {
-            "value": "Availability Set"
+            "value": "Availability Zones"
         },
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIP1NewOrExisting": {
-            "value": "new"
+        "acceleratedConnections": {
+            "value": false
         },
-        "publicIP1Name": {
-            "value": ""
-        },
-        "publicIP1ResourceGroup": {
-            "value": ""
+        "acceleratedConnectionsSku": {
+            "value": "A1"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -57,25 +81,22 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "ExternalSubnet"
+            "value": "externalsubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
         },
+        "subnet1StartAddress": {
+            "value": "172.16.136.4"
+        },
         "subnet2Name": {
-            "value": "InternalSubnet"
+            "value": "internalsubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
         },
         "subnet2StartAddress": {
             "value": "172.16.136.68"
-        },
-        "subnet3Name": {
-            "value": "ProtectedASubnet"
-        },
-        "subnet3Prefix": {
-            "value": "172.16.137.0/24"
         },
         "serialConsole": {
             "value": "yes"
@@ -89,38 +110,68 @@
         "fortiManagerSerial": {
             "value": ""
         },
-        "fortiGateLicenseBYOLA": {
+        "fortiGateLicenseBYOL1": {
             "value": ""
         },
-        "fortiGateLicenseBYOLB": {
+        "fortiGateLicenseBYOL2": {
             "value": ""
         },
-        "fortiGateLicenseBYOLC": {
+        "fortiGateLicenseBYOL3": {
             "value": ""
         },
-        "fortiGateLicenseFortiFlexA": {
+        "fortiGateLicenseBYOL4": {
             "value": ""
         },
-        "fortiGateLicenseFortiFlexB": {
+        "fortiGateLicenseBYOL5": {
             "value": ""
         },
-        "fortiGateLicenseFortiFlexC": {
+        "fortiGateLicenseBYOL6": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOL7": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOL8": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex1": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex2": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex3": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex4": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex5": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex6": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex7": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlex8": {
             "value": ""
         },
         "customImageReference": {
             "value": ""
         },
         "location": {
-            "value": ""
+            "value": "" // TODO: Fill in parameter value
         },
         "tagsByResource": {
             "value": {}
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
-                "template": "Active-Active-ELB-ILB",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA"
+              "publisher": "Fortinet",
+              "template": "Active-Active-ELB-ILB",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA"
             }
         }
     }

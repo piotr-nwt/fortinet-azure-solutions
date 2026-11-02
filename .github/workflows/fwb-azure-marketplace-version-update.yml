@@ -4,46 +4,67 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron:  '00 22 * * 0'
+    - cron:  '00 22 * * *'
+
+env:
+  PRODUCT: FortiWeb
+  PRODUCTSHORT: FWB
+  PRODUCTOFFER: fortinet_fortiweb-vm_v5
+  PRODUCTSKU: fortinet_fw-vm
 
 jobs:
   ARM-FWB-Version-Update:
     name: Update FWB version list
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.2.0
+    - uses: actions/checkout@v6
 
     - name: Azure Login via Az module
-      uses: azure/login@v1.4.6
+      uses: azure/login@v3
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
     - name: Verify FWB published version, update templates when new version found
-      uses: azure/powershell@v1.2.0
+      uses: azure/powershell@v2
       with:
         inlineScript: |
+          function Sort-Versions {
+            param (
+              [string[]]$Versions
+            )
+            $parsedVersions = $Versions | ForEach-Object {
+              $versionParts = $_ -split '\.'
+              [pscustomobject]@{
+                Major = [int]$versionParts[0]
+                Minor = [int]$versionParts[1]
+                Patch = [int]$versionParts[2]
+                FullVersion = $_
+              }
+            }
+            $sortedVersions = $parsedVersions | Sort-Object -Property Major, Minor, Patch -Descending
+            $sortedVersions.FullVersion
+          }
           $buildingBlocks = @("A-Single-VM", "Active-Active","Active-Passive")
-          $fwbMarketplaceVersions = @()
-          $fwbMarketplaceVersionsUI = @()
+          $marketplaceVersions = @()
+          $marketplaceVersionsUI = @()
 
-          $fortiwebVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortiweb-vm_v5" -sku "fortinet_fw-vm"
-          $fwbMarketplaceVersions += $($fortiwebVersions).Version
-          $fwbMarketplaceVersions += "latest"
-          $fwbMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
-          $fwbMarketplaceVersions | ForEach-Object { $fwbMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $fwbMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
+          $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          $marketplaceVersions = @("latest") + $(Sort-Versions($marketplaceVersions))
+          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
+          $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fwbversion.json" '.parameters.fortiWebImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/mainTemplate.json"
-            $content = Get-Content "./FortiWeb/${buildingBlock}/mainTemplate.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fwbversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiWeb/${buildingBlock}/mainTemplate.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == \"fortiWebImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./FortiWeb/${buildingBlock}/createUiDefinition.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == "imageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiWeb/${buildingBlock}/createUiDefinition.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             }
           }
           Remove-Item "./fwbversion.json"
@@ -52,7 +73,7 @@ jobs:
 
     - name: Create Pull Request
       id: cpr
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Update report
@@ -64,7 +85,7 @@ jobs:
         title: '[FWB] Azure Marketplace FWB Version update'
         body: |
           Update report
-          - Updated FWB version in building blocks: "A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN"
+          - Updated FortiWeb version in building blocks: "A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN"
           - Auto-generated by [create-pull-request][1]
 
           [1]: https://github.com/peter-evans/create-pull-request

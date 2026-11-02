@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyser Name Prefix",
+        "label": "FortiAnalyzer Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -71,7 +71,7 @@
         "visible": true
       },
       {
-        "name": "fortiAnalyzerImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -88,25 +88,297 @@
         "visible": true
       },
       {
-        "name": "fortiAnalyzerImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image Version",
-        "defaultValue": "latest",
+        "defaultValue": "7.4.7",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "6.4.6",
-              "value": "6.4.6"
+              "label": "latest",
+              "value": "latest"
+            },
+            {
+              "label": "8.0.2",
+              "value": "8.0.2"
+            },
+            {
+              "label": "8.0.1",
+              "value": "8.0.1"
+            },
+            {
+              "label": "8.0.0",
+              "value": "8.0.0"
+            },
+            {
+              "label": "7.6.8",
+              "value": "7.6.8"
+            },
+            {
+              "label": "7.6.7",
+              "value": "7.6.7"
+            },
+            {
+              "label": "7.6.6",
+              "value": "7.6.6"
+            },
+            {
+              "label": "7.6.5",
+              "value": "7.6.5"
+            },
+            {
+              "label": "7.6.4",
+              "value": "7.6.4"
+            },
+            {
+              "label": "7.6.3",
+              "value": "7.6.3"
+            },
+            {
+              "label": "7.6.2",
+              "value": "7.6.2"
+            },
+            {
+              "label": "7.6.1",
+              "value": "7.6.1"
+            },
+            {
+              "label": "7.6.0",
+              "value": "7.6.0"
+            },
+            {
+              "label": "7.4.8",
+              "value": "7.4.8"
+            },
+            {
+              "label": "7.4.7",
+              "value": "7.4.7"
+            },
+            {
+              "label": "7.4.6",
+              "value": "7.4.6"
+            },
+            {
+              "label": "7.4.5",
+              "value": "7.4.5"
+            },
+            {
+              "label": "7.4.4",
+              "value": "7.4.4"
+            },
+            {
+              "label": "7.4.3",
+              "value": "7.4.3"
+            },
+            {
+              "label": "7.4.2",
+              "value": "7.4.2"
+            },
+            {
+              "label": "7.4.12",
+              "value": "7.4.12"
+            },
+            {
+              "label": "7.4.11",
+              "value": "7.4.11"
+            },
+            {
+              "label": "7.4.10",
+              "value": "7.4.10"
+            },
+            {
+              "label": "7.4.1",
+              "value": "7.4.1"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
+            },
+            {
+              "label": "7.2.9",
+              "value": "7.2.9"
+            },
+            {
+              "label": "7.2.8",
+              "value": "7.2.8"
+            },
+            {
+              "label": "7.2.7",
+              "value": "7.2.7"
+            },
+            {
+              "label": "7.2.6",
+              "value": "7.2.6"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.2",
+              "value": "7.2.2"
+            },
+            {
+              "label": "7.2.13",
+              "value": "7.2.13"
+            },
+            {
+              "label": "7.2.11",
+              "value": "7.2.11"
+            },
+            {
+              "label": "7.2.10",
+              "value": "7.2.10"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.0.9",
+              "value": "7.0.9"
+            },
+            {
+              "label": "7.0.7",
+              "value": "7.0.7"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.14",
+              "value": "7.0.14"
+            },
+            {
+              "label": "7.0.13",
+              "value": "7.0.13"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.10",
+              "value": "7.0.10"
             },
             {
               "label": "7.0.1",
               "value": "7.0.1"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.15",
+              "value": "6.4.15"
+            },
+            {
+              "label": "6.4.14",
+              "value": "6.4.14"
+            },
+            {
+              "label": "6.4.13",
+              "value": "6.4.13"
+            },
+            {
+              "label": "6.4.12",
+              "value": "6.4.12"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.1",
+              "value": "6.4.1"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.2.3",
+              "value": "6.2.3"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.1",
+              "value": "6.2.1"
+            },
+            {
+              "label": "6.2.0",
+              "value": "6.2.0"
             }
           ]
         },
@@ -145,14 +417,6 @@
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiAnalyzer VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
-                  "Standard_D4as_v4",
-                  "Standard_A6",
-                  "Standard_A7",
-                  "Standard_A8_v2",
-                  "Standard_D4",
-                  "Standard_DS4",
-                  "Standard_DS4_v2",
-                  "Standard_D3_v2",
                   "Standard_DS4_v2",
                   "Standard_DS5_v2",
                   "Standard_D4_v3",
@@ -171,17 +435,24 @@
                   "Standard_D32as_v4",
                   "Standard_D48as_v4",
                   "Standard_D64as_v4",
-                  "Standard_D96as_v4"
+                  "Standard_D96as_v4",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D48_v5",
+                  "Standard_D64_v5",
+                  "Standard_D96_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D48s_v5",
+                  "Standard_D64s_v5",
+                  "Standard_D96s_v5"
                 ],
                 "constraints": {
                   "allowedValues": [
-                    "Standard_A6",
-                    "Standard_A7",
-                    "Standard_A8_v2",
-                    "Standard_D4",
-                    "Standard_DS4",
-                    "Standard_DS4_v2",
-                    "Standard_D3_v2",
                     "Standard_DS4_v2",
                     "Standard_DS5_v2",
                     "Standard_D4_v3",
@@ -200,7 +471,21 @@
                     "Standard_D32as_v4",
                     "Standard_D48as_v4",
                     "Standard_D64as_v4",
-                    "Standard_D96as_v4"
+                    "Standard_D96as_v4",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D48_v5",
+                    "Standard_D64_v5",
+                    "Standard_D96_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D48s_v5",
+                    "Standard_D64s_v5",
+                    "Standard_D96s_v5"
                   ]
                 },
                 "options": {
@@ -238,7 +523,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "Availability Set",
+                "defaultValue": "Availability Zones",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
@@ -386,9 +671,9 @@
               {
                 "name": "fazLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -396,7 +681,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer')]"
+                "visible": true
               },
               {
                 "name": "fazAcontent",
@@ -413,7 +698,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),not(steps('instance').fazLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fazLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fazBcontent",
@@ -430,7 +715,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),not(steps('instance').fazLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fazLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fazAfortiflex",
@@ -443,7 +728,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),steps('instance').fazLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fazLicense.fortiFlexCheck]"
               },
               {
                 "name": "fazBfortiflex",
@@ -456,7 +741,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),steps('instance').fazLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fazLicense.fortiFlexCheck]"
               },
               {
                 "name": "fazAserial",
@@ -497,6 +782,31 @@
         },
         "elements": [
           {
+            "name": "options",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Architecture options",
+            "defaultValue": "VRRP automatic failover using a secondary private IP",
+            "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Active-Active",
+                  "value": "a-a"
+                },
+                {
+                  "label": "VRRP automatic failover using a public IP attached to a secondary ipconfig",
+                  "value": "a-p-external-vip"
+                },
+                {
+                  "label": "VRRP automatic failover using a secondary private IP",
+                  "value": "a-p-internal-vip"
+                }
+              ]
+            },
+            "visible": true
+          },
+          {
             "name": "virtualnetworksection",
             "type": "Microsoft.Common.Section",
             "label": "Configure Internal Networking",
@@ -521,7 +831,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiAnalyzer-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'fortianalyzer-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -534,12 +844,12 @@
                   "subnet1": {
                     "label": "FortiAnalyzer Subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "fortianalyzersubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
                       "minAddressPrefixSize": "/29",
-                      "minAddressCount": 1,
+                      "minAddressCount": 4,
                       "requireContiguousAddresses": true
                     }
                   }
@@ -577,18 +887,70 @@
             }
           },
           {
-            "name": "publicip",
+            "name": "fazvippublicip",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "FortiAnalyze Public IP",
+              "publicIpAddress": "FortiAnalyzer VIP Public IP",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to FortiAnalyzer VM",
+              "publicIpAddress": "Public IP attached for FortiAnalyzer service",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FAZAPublicIP',concat(basics('namePrefix'),'-FAZ-A-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-vip',concat(basics('namePrefix'),'-faz-vip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": "[equals(steps('networking').options, 'a-p-external-vip')]"
+          },
+          {
+            "name": "fazamgmtpublicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiAnalyzer A management",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to the FortiAnalyzer A for management",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-a-mgmt-pip',concat(basics('namePrefix'),'-faz-a-mgmt-pip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "fazbmgmtpublicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiAnalyzer B management",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to the FortiAnalyzer B for management",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-b-mgmt-pip',concat(basics('namePrefix'),'-faz-b-mgmt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -608,9 +970,74 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "text": "This deployment can be deployed without public IPs but requires outbound access using a upstream FortiGate, NAT Gateway or other path to internet. Deployment with public IPs requires the standard SKU.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
+          }
+        ]
+      },
+      {
+        "name": "publicipreview",
+        "label": "Public IP Verification",
+        "subLabel": {
+          "preValidation": "Public IP SKU Review",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Public IP SKU Review",
+        "elements": [
+          {
+            "name": "BasicIPWarning1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiAnalyzer VIP Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[and(equals(steps('networking').options, 'a-p-external-vip'),not(or(equals(steps('publicip').fazvippublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazvippublicip.sku, 'Standard'))))]"
+          },
+          {
+            "name": "StandardIPConfirmation1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiAnalyzer VIP Public IP is Standard SKU. Proceed."
+            },
+            "visible": "[equals(steps('publicip').fazvippublicip.sku, 'Standard')]"
+          },
+          {
+            "name": "BasicIPWarning2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[not(or(equals(steps('publicip').fazamgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazamgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiGate A management Public IP is Standard SKU or none selected. Proceed."
+            },
+            "visible": "[equals(steps('publicip').fazamgmtpublicip.sku, 'Standard')]"
+          },
+          {
+            "name": "BasicIPWarning3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[not(or(equals(steps('publicip').fazbmgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazbmgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiGate B management Public IP is Standard SKU or none selected. Proceed."
+            },
+            "visible": "[equals(steps('publicip').fazbmgmtpublicip.sku, 'Standard')]"
           }
         ]
       },
@@ -664,32 +1091,76 @@
                 }
               }
             ]
+          },
+          {
+            "name": "serialconsole",
+            "type": "Microsoft.Common.Section",
+            "label": "Serial Console",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Serial Console",
+                "defaultValue": "yes",
+                "toolTip": "Enables the serial console and creates a required storage account.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This requires a storage account which will be created during deployment.",
+                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                }
+              }
+            ]
           }
         ]
       }
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSku": "[basics('fortiAnalyzerImageSKU')]",
-      "imageVersion": "[basics('fortiAnalyzerImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
+      "dataDiskCount": "[int(steps('instance').datadisk.vmDataDiskCount)]",
       "dataDiskSize": "[steps('instance').datadisk.vmDataDiskSize]",
       "diskType": "[steps('instance').datadisk.diskType]",
-      "fortiAnalyzerLicenseBYOLA": "[steps('instance').fazLicense.fazAcontent]",
-      "fortiAnalyzerLicenseBYOLB": "[steps('instance').fazLicense.fazBcontent]",
-      "fortiAnalyzerLicenseFortiFlexA": "[steps('instance').fazLicense.fazAfortiflex]",
-      "fortiAnalyzerLicenseFortiFlexB": "[steps('instance').fazLicense.fazBfortiflex]",
+      "fortiAnalyzerALicenseBYOL": "[steps('instance').fazLicense.fazAcontent]",
+      "fortiAnalyzerBLicenseBYOL": "[steps('instance').fazLicense.fazBcontent]",
+      "fortiAnalyzerALicenseFortiFlex": "[steps('instance').fazLicense.fazAfortiflex]",
+      "fortiAnalyzerBLicenseFortiFlex": "[steps('instance').fazLicense.fazBfortiflex]",
       "fortiAnalyzerSerialNumberA": "[steps('instance').fazLicense.fazAserial]",
       "fortiAnalyzerSerialNumberB": "[steps('instance').fazLicense.fazBserial]",
-      "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
-      "publicIPName": "[steps('publicip').publicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
+      "highavailabilityMethod": "[steps('networking').options]",
+      "publicIP1NewOrExisting": "[steps('publicip').fazvippublicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').fazvippublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').fazvippublicip.resourceGroup]",
+      "publicIP2NewOrExisting": "[steps('publicip').fazamgmtpublicip.newOrExistingOrNone]",
+      "publicIP2Name": "[steps('publicip').fazamgmtpublicip.name]",
+      "publicIP2ResourceGroup": "[steps('publicip').fazamgmtpublicip.resourceGroup]",
+      "publicIP3NewOrExisting": "[steps('publicip').fazbmgmtpublicip.newOrExistingOrNone]",
+      "publicIP3Name": "[steps('publicip').fazbmgmtpublicip.name]",
+      "publicIP3ResourceGroup": "[steps('publicip').fazbmgmtpublicip.resourceGroup]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
@@ -697,6 +1168,7 @@
       "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "additionalCustomData": "[steps('advanced').customdata.config]"
     }
   }

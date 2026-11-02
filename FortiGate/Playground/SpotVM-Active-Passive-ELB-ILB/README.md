@@ -2,7 +2,7 @@
 
 # Introduction
 
-This template deploys the [Active/Passive HA FortiGate deployment](../../Active-Passive-ELB-ILB) using Spot VMs. Using Spot VMs allows you to take advantage of our unused capacity at a significant cost savings. At any point in time when Azure needs the capacity back, the Azure infrastructure will evict Spot VMs. This is great for demo or tests that are not cricital to the customer.
+This template deploys the [Active/Passive HA FortiGate deployment](../../Active-Passive-ELB-ILB) using Spot VMs. Using Spot VMs allows you to take advantage of our unused capacity at a significant cost savings. At any point in time when Azure needs the capacity back, the Azure infrastructure will evict Spot VMs. This is great for demo or tests that are not critical to the customer.
 
 For more information about the deployment review the documentation [here](../../Active-Passive-ELB-ILB)
 
@@ -11,10 +11,10 @@ For more information about the deployment review the documentation [here](../../
 ### Azure Portal
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FSpotVM-Active-Passive-ELB-ILB%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
+  <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FPlayground%2FSpotVM-Active-Passive-ELB-ILB%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
+  <img src="https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
 </a>
 
 ### Azure CLI

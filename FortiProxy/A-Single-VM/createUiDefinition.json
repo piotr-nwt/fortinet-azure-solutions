@@ -98,7 +98,7 @@
         "visible": true
       },
       {
-        "name": "fortiProxyImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiProxy Image Version",
         "defaultValue": "latest",
@@ -107,32 +107,32 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "7.0.11",
-              "value": "7.0.11"
-            },
-            {
-              "label": "7.0.12",
-              "value": "7.0.12"
-            },
-            {
-              "label": "7.0.13",
-              "value": "7.0.13"
-            },
-            {
-              "label": "7.2.5",
-              "value": "7.2.5"
-            },
-            {
-              "label": "7.2.6",
-              "value": "7.2.6"
-            },
-            {
-              "label": "7.2.7",
-              "value": "7.2.7"
-            },
-            {
               "label": "latest",
               "value": "latest"
+            },
+            {
+              "label": "7.6.2",
+              "value": "7.6.2"
+            },
+            {
+              "label": "7.6.1",
+              "value": "7.6.1"
+            },
+            {
+              "label": "7.4.8",
+              "value": "7.4.8"
+            },
+            {
+              "label": "7.4.7",
+              "value": "7.4.7"
+            },
+            {
+              "label": "7.2.13",
+              "value": "7.2.13"
+            },
+            {
+              "label": "7.2.10",
+              "value": "7.2.10"
             }
           ]
         },
@@ -861,7 +861,7 @@
     "outputs": {
       "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
       "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
-      "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
+      "fortiProxyImageVersion": "[basics('imageVersion')]",
       "fortiProxyName": "[steps('instance').virtualmachinename.fpxvmname]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
